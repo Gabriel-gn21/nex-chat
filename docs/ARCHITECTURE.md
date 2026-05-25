@@ -1,4 +1,4 @@
-# Nex-Chat — Arquitetura do Sistema
+# Nex-Chat - Arquitetura do Sistema
 
 ## Visão Geral
 
@@ -14,7 +14,7 @@ O **Nex-Chat** é uma plataforma de atendimento via WhatsApp que integra automa�
 ┌─────────────────────────────────────────────────────────────────┐
 │                        CAMADA DE APRESENTAÇÃO                    │
 │              React 18 + TypeScript + Vite + Tailwind CSS         │
-│   (SPA — Single Page Application, porta 5173)                   │
+│   (SPA - Single Page Application, porta 5173)                   │
 ├─────────────────────────────────────────────────────────────────┤
 │                      CAMADA DE API / NEGÓCIOS                    │
 │              Node.js 22 + Express 4 (ESM, porta 3001)           │
@@ -41,7 +41,7 @@ O **Nex-Chat** é uma plataforma de atendimento via WhatsApp que integra automa�
 |--------|-----------------|
 | `index.mjs` | Servidor Express, roteamento, SSE, middleware de segurança |
 | `auth.mjs` | Autenticação JWT, bcrypt, 2FA TOTP, rate limit, recuperação de senha, logs de auditoria, LGPD |
-| `engine.mjs` | Motor de chatbot — executa nós do chatflow, gerencia sessões, integra IA |
+| `engine.mjs` | Motor de chatbot - executa nós do chatflow, gerencia sessões, integra IA |
 | `webhook.mjs` | Recebe eventos da Evolution API (mensagens inbound) |
 | `evolution.mjs` | Envia mensagens via Evolution API (outbound) |
 | `store.mjs` | Estado global em memória com persistência em `data.json` |
@@ -60,7 +60,7 @@ Operador
    ▼
 POST /auth/login
    ├─ Rate Limit Check (5 tentativas → bloqueio 15min)
-   ├─ bcrypt.compare(senha, hash armazenado) — custo 12
+   ├─ bcrypt.compare(senha, hash armazenado) - custo 12
    ├─ [se 2FA ativo] TOTP.verify(token, secret)
    └─ jwt.sign({ username, role, jti }, JWT_SECRET, { expiresIn: '8h' })
          │

@@ -73,7 +73,7 @@
 \begin{titlepage}
   \centering
   \vspace*{2cm}
-  {\Large\bfseries Universidade de Mogi das Cruzes --- UMC \par}
+  {\Large\bfseries Universidade de Mogi das Cruzes - UMC \par}
   \vspace{1cm}
   {\LARGE\bfseries RELATÓRIO DE AUDITORIA TÉCNICA,\par
                    FORENSE E DE CONFORMIDADE \par}
@@ -83,7 +83,7 @@
   \vspace{2cm}
   {\large Prof. Dr. Fabiano Menegidio \par}
   \vspace{0.3cm}
-  {\normalsize Universidade de Mogi das Cruzes --- UMC \par}
+  {\normalsize Universidade de Mogi das Cruzes - UMC \par}
   \vspace{1.5cm}
   {\normalsize Versão: 1.0 \quad|\quad Data: \today \par}
   \vspace{1cm}
@@ -95,7 +95,7 @@
     conformidade conduzida sobre o projeto \textbf{Nex-Chat}, uma plataforma de atendimento via
     WhatsApp com automação de chatbot, gestão de operadores e integrações de pagamento. A auditoria
     foi realizada segundo os princípios da norma \textbf{ABNT NBR ISO/IEC 27001:2022} e da
-    \textbf{Lei Geral de Proteção de Dados} (Lei nº 13.709/2018 --- LGPD), abrangendo a análise da
+    \textbf{Lei Geral de Proteção de Dados} (Lei nº 13.709/2018 - LGPD), abrangendo a análise da
     robustez arquitetural, segurança da stack tecnológica (Node.js/Express/React), modelagem de
     ameaças, e verificação de conformidade regulatória. Foram identificados riscos relacionados à
     ausência histórica de mecanismos formais de autenticação (pré-implementação do módulo
@@ -128,14 +128,14 @@
 
 \subsubsection{Backend}
 \begin{itemize}
-  \item \textbf{Runtime:} Node.js 22.x (ECMAScript Modules --- ESM)
+  \item \textbf{Runtime:} Node.js 22.x (ECMAScript Modules - ESM)
   \item \textbf{Framework HTTP:} Express 4.19.x
   \item \textbf{Autenticação/Criptografia:} bcryptjs 3.x (hash de senhas), jsonwebtoken 9.x (JWT HS256), otplib 13.x (TOTP 2FA)
   \item \textbf{Persistência:} Sistema de arquivos (data.json, users.json) com store em memória (store.mjs)
   \item \textbf{Comunicação em Tempo Real:} Server-Sent Events (SSE) via \texttt{/api/events}
   \item \textbf{Integração WhatsApp:} Evolution API (REST, execução local via Docker)
   \item \textbf{Integração de Pagamento:} Mercado Pago REST API (PIX e checkout de cartão)
-  \item \textbf{IA Generativa:} Gemini (Google), GPT-4o (OpenAI), Claude (Anthropic) --- via REST
+  \item \textbf{IA Generativa:} Gemini (Google), GPT-4o (OpenAI), Claude (Anthropic) - via REST
 \end{itemize}
 
 \subsubsection{Frontend}

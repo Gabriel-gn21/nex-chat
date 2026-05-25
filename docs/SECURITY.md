@@ -1,10 +1,10 @@
-# Nex-Chat — Documentação de Segurança
+# Nex-Chat - Documentação de Segurança
 
 ## Referência Normativa
 
-- **ABNT NBR ISO/IEC 27001:2022** — Sistema de Gestão de Segurança da Informação
-- **Lei nº 13.709/2018 (LGPD)** — Lei Geral de Proteção de Dados Pessoais
-- **OWASP Top 10 2021** — Diretrizes de segurança para aplicações web
+- **ABNT NBR ISO/IEC 27001:2022** - Sistema de Gestão de Segurança da Informação
+- **Lei nº 13.709/2018 (LGPD)** - Lei Geral de Proteção de Dados Pessoais
+- **OWASP Top 10 2021** - Diretrizes de segurança para aplicações web
 
 ---
 
@@ -14,14 +14,14 @@
 
 As senhas dos operadores são armazenadas exclusivamente como hash bcrypt com:
 - **Algoritmo**: bcrypt (implementado via `bcryptjs`)
-- **Salt**: gerado criptograficamente via `bcrypt.genSalt()` — único por usuário
+- **Salt**: gerado criptograficamente via `bcrypt.genSalt()` - único por usuário
 - **Custo (work factor)**: 12 rounds (recomendação OWASP para bcrypt em 2024)
-- **Armazenamento**: apenas o hash+salt em `server/users.json` — jamais a senha em texto plano
+- **Armazenamento**: apenas o hash+salt em `server/users.json` - jamais a senha em texto plano
 
 **Justificativa técnica**: O custo 12 garante ~300ms por operação de hash em hardware moderno, tornando ataques de dicionário inviáveis. O salt único por usuário previne ataques de rainbow table.
 
 ```javascript
-// Exemplo — server/auth.mjs
+// Exemplo - server/auth.mjs
 const BCRYPT_ROUNDS = 12;
 const salt = await bcrypt.genSalt(BCRYPT_ROUNDS);
 const hash = await bcrypt.hash(plaintext, salt);
@@ -49,9 +49,9 @@ const token = jwt.sign(
 - **Bloqueio**: 15 minutos após atingir o limite
 - **Proteção contra timing attacks**: comparação bcrypt sempre executada (mesmo para usuário inexistente)
 
-### 1.4 Autenticação de Dois Fatores — 2FA (Requisito 1.5–1.6)
+### 1.4 Autenticação de Dois Fatores - 2FA (Requisito 1.5–1.6)
 
-- **Protocolo**: TOTP (Time-based One-Time Password) — RFC 6238
+- **Protocolo**: TOTP (Time-based One-Time Password) - RFC 6238
 - **Biblioteca**: `otplib` v13
 - **Drift tolerado**: ±30 segundos (1 janela TOTP)
 - **Ativação**: requer confirmação com token TOTP após geração do secret
@@ -63,7 +63,7 @@ const token = jwt.sign(
 
 | Item | Implementação |
 |------|--------------|
-| Token gerado | `crypto.randomBytes(48).toString('hex')` — 96 hex chars |
+| Token gerado | `crypto.randomBytes(48).toString('hex')` - 96 hex chars |
 | Expiração | 30 minutos |
 | Invalidação após uso | Token removido do Map imediatamente após consumo |
 | Falha por token expirado | HTTP 400 com mensagem "Token expirado" |
@@ -130,8 +130,8 @@ Endpoints disponíveis para exercício dos direitos (Art. 18):
 ### 4.4 Minimização de Dados
 
 O sistema coleta apenas dados necessários para a prestação do serviço:
-- Número de telefone e nome (WhatsApp) — necessários para comunicação
-- Username do operador — necessário para controle de acesso
+- Número de telefone e nome (WhatsApp) - necessários para comunicação
+- Username do operador - necessário para controle de acesso
 - **Não coletados**: dados sensíveis (saúde, genômicos, biometria, orientação sexual)
 
 ---
@@ -200,11 +200,11 @@ npm ci --package-lock-only  # gera lock com integridade
 | Teste | Resultado |
 |-------|----------|
 | Login com credenciais corretas | ✅ JWT gerado e retornado |
-| Login com senha incorreta | ✅ HTTP 401 — "Credenciais inválidas" |
-| Acesso a rota protegida sem JWT | ✅ HTTP 401 — "Token ausente" |
-| Logout invalida token | ✅ Token na blacklist — HTTP 401 em usos subsequentes |
-| Token expirado rejeitado | ✅ HTTP 401 — "Sessão expirada" |
-| Rate limit após 5 tentativas | ✅ HTTP 429 — "Conta bloqueada" |
+| Login com senha incorreta | ✅ HTTP 401 - "Credenciais inválidas" |
+| Acesso a rota protegida sem JWT | ✅ HTTP 401 - "Token ausente" |
+| Logout invalida token | ✅ Token na blacklist - HTTP 401 em usos subsequentes |
+| Token expirado rejeitado | ✅ HTTP 401 - "Sessão expirada" |
+| Rate limit após 5 tentativas | ✅ HTTP 429 - "Conta bloqueada" |
 | Recuperação de senha | ✅ Token seguro gerado, inválido após uso |
 | Log de auditoria gravado | ✅ `logs/audit.log` atualizado em cada evento |
 | LGPD export funcional | ✅ JSON com dados pessoais retornado |

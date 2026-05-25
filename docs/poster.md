@@ -1,8 +1,8 @@
-# PÔSTER CIENTÍFICO — NEX-CHAT
+# PÔSTER CIENTÍFICO - NEX-CHAT
 
 ## Plataforma de Atendimento via WhatsApp com Segurança da Informação e Conformidade LGPD
 
-**Gabriel Nascimento** | Universidade de Mogi das Cruzes — UMC | 2026
+**Gabriel Nascimento** | Universidade de Mogi das Cruzes - UMC | 2026
 
 ---
 
@@ -58,8 +58,8 @@ Operador
    ▼
 POST /auth/login
    ├─ Rate Limit: 5 tentativas / 15 min bloqueio
-   ├─ bcrypt.compare(senha, hash) — custo 12
-   ├─ [2FA] TOTP.verify(token, secret) — RFC 6238
+   ├─ bcrypt.compare(senha, hash) - custo 12
+   ├─ [2FA] TOTP.verify(token, secret) - RFC 6238
    └─ JWT assinado → { username, role, jti, exp }
           │
           ▼
@@ -82,15 +82,15 @@ POST /auth/logout
 
 | Artigo LGPD | Implementação |
 |-------------|--------------|
-| Art. 7º, V — Execução de contrato | Base legal para dados de clientes (nome, telefone) |
-| Art. 7º, I — Consentimento | `POST /lgpd/consent` registra consentimento com versão e data |
-| Art. 15 — Revogação | `POST /lgpd/consent { given: false }` |
-| Art. 18, I — Acesso | `GET /lgpd/data` — dados pessoais retidos |
-| Art. 18, V — Portabilidade | `GET /lgpd/export` — export JSON para download |
-| Art. 18, VI — Eliminação | `DELETE /lgpd/data` — exclusão com auditoria |
+| Art. 7º, V - Execução de contrato | Base legal para dados de clientes (nome, telefone) |
+| Art. 7º, I - Consentimento | `POST /lgpd/consent` registra consentimento com versão e data |
+| Art. 15 - Revogação | `POST /lgpd/consent { given: false }` |
+| Art. 18, I - Acesso | `GET /lgpd/data` - dados pessoais retidos |
+| Art. 18, V - Portabilidade | `GET /lgpd/export` - export JSON para download |
+| Art. 18, VI - Eliminação | `DELETE /lgpd/data` - exclusão com auditoria |
 
 **Dados coletados:** Nome e telefone (WhatsApp), username de operadores, histórico de atendimentos.  
-**Dados sensíveis:** Nenhum (Art. 5º, II — não aplicável).  
+**Dados sensíveis:** Nenhum (Art. 5º, II - não aplicável).  
 **Minimização:** Apenas dados necessários para prestação do serviço.
 
 ---

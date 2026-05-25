@@ -12,7 +12,7 @@
 
 ## Sobre o Projeto
 
-O Nex-Chat é uma plataforma completa de atendimento ao cliente via WhatsApp Business, desenvolvida em **Node.js 22 + React 18 + TypeScript**. Integra automação de chatbot orientada a fluxos visuais, gestão de operadores humanos, integrações de pagamento (Mercado Pago — PIX e cartão de crédito) e automações externas via Make/Zapier.
+O Nex-Chat é uma plataforma completa de atendimento ao cliente via WhatsApp Business, desenvolvida em **Node.js 22 + React 18 + TypeScript**. Integra automação de chatbot orientada a fluxos visuais, gestão de operadores humanos, integrações de pagamento (Mercado Pago - PIX e cartão de crédito) e automações externas via Make/Zapier.
 
 O projeto implementa **controles robustos de segurança da informação** alinhados à norma **ABNT NBR ISO/IEC 27001:2022** e **conformidade plena com a LGPD** (Lei nº 13.709/2018).
 
@@ -70,11 +70,11 @@ O projeto implementa **controles robustos de segurança da informação** alinha
 
 | Artigo | Implementação |
 |--------|--------------|
-| Art. 7º — Base Legal | Execução de contrato + legítimo interesse |
-| Art. 18, I — Acesso | `GET /lgpd/data` |
-| Art. 18, V — Portabilidade | `GET /lgpd/export` |
-| Art. 18, VI — Eliminação | `DELETE /lgpd/data` |
-| Art. 15 — Revogação | `POST /lgpd/consent` |
+| Art. 7º - Base Legal | Execução de contrato + legítimo interesse |
+| Art. 18, I - Acesso | `GET /lgpd/data` |
+| Art. 18, V - Portabilidade | `GET /lgpd/export` |
+| Art. 18, VI - Eliminação | `DELETE /lgpd/data` |
+| Art. 15 - Revogação | `POST /lgpd/consent` |
 
 ---
 
@@ -179,11 +179,11 @@ GET    /auth/audit-log     # Logs de auditoria (superadmin)
 
 ## Documentação Técnica
 
-- **[Arquitetura](docs/ARCHITECTURE.md)** — Stack, padrões, diagramas, ativos, ameaças
-- **[Segurança](docs/SECURITY.md)** — Todos os controles implementados com exemplos de código
-- **[Resumo Científico](docs/resumo-cientifico.md)** — 268 palavras, metodologia e resultados
-- **[Pôster Científico](docs/poster.md)** — Visualização dos mecanismos de segurança
-- **[Relatório de Auditoria LaTeX](docs/relatorio-auditoria.tex)** — Auditoria completa ISO 27001 / LGPD
+- **[Arquitetura](docs/ARCHITECTURE.md)** - Stack, padrões, diagramas, ativos, ameaças
+- **[Segurança](docs/SECURITY.md)** - Todos os controles implementados com exemplos de código
+- **[Resumo Científico](docs/resumo-cientifico.md)** - 268 palavras, metodologia e resultados
+- **[Pôster Científico](docs/poster.md)** - Visualização dos mecanismos de segurança
+- **[Relatório de Auditoria LaTeX](docs/relatorio-auditoria.tex)** - Auditoria completa ISO 27001 / LGPD
 
 ---
 
@@ -191,11 +191,11 @@ GET    /auth/audit-log     # Logs de auditoria (superadmin)
 
 - ABNT NBR ISO/IEC 27001:2022
 - Lei nº 13.709/2018 (LGPD)
-- RFC 6238 — TOTP
-- RFC 7519 — JWT
+- RFC 6238 - TOTP
+- RFC 7519 - JWT
 - OWASP Top 10 2021
 - NIST SP 800-63B
 
 ---
 
-*Desenvolvido para fins acadêmicos e comerciais — Universidade de Mogi das Cruzes (UMC) — 2026*
+*Desenvolvido para fins acadêmicos e comerciais - Universidade de Mogi das Cruzes (UMC) - 2026*
