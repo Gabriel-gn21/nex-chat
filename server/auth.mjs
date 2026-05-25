@@ -15,7 +15,7 @@ import bcrypt     from 'bcryptjs';
 import jwt        from 'jsonwebtoken';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { TOTP, generateSecret: otpGenerateSecret } = require('otplib');
+const { TOTP, generateSecret: otpGenerateSecret, generateURI } = require('otplib');
 import crypto     from 'crypto';
 import fs         from 'fs';
 import path       from 'path';
@@ -200,7 +200,8 @@ export function generate2FASecret(username) {
   users[username].twoFactorSecret = secret;
   users[username].twoFactorEnabled = false; // ainda não confirmado
   saveUsers();
-  const otpAuthUrl = totp.keyuri(username, 'Nex-Chat', secret);
+  // Gera URL otpauth:// para escaneamento no Google Authenticator
+  const otpAuthUrl = generateURI({ secret, label: username, issuer: 'Nex-Chat', type: 'totp' });
   return { secret, otpAuthUrl };
 }
 
