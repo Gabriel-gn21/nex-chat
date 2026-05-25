@@ -1,0 +1,38 @@
+# Dependências
+node_modules/
+server/node_modules/
+
+# Variáveis de ambiente e segredos (NUNCA commitar)
+server/.env
+.env
+.env.local
+.env.*.local
+
+# Dados de produção (contém dados pessoais)
+server/data.json
+server/users.json
+server/logs/
+
+# Build do frontend
+dist/
+
+# Editores e IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# PM2
+.pm2/
+
+# TypeScript
+*.tsbuildinfo

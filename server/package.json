@@ -1,0 +1,17 @@
+{
+  "name": "nex-chat-server",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs",
+    "dev": "node --watch index.mjs"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.3",
+    "otplib": "^13.4.0",
+    "qrcode": "^1.5.4"
+  }
+}
