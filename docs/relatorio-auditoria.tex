@@ -11,16 +11,17 @@
 \usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
 
 % ─── Fonte e Idioma ───────────────────────────────────────────────────────────
-\usepackage{fontspec}
-\usepackage[portuguese, bidi=basic, provide=*]{babel}
-\babelfont{rm}{Noto Sans}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[portuguese]{babel}
 
 % ─── Pacotes essenciais ───────────────────────────────────────────────────────
 \usepackage{longtable}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{xcolor}
-\usepackage{listings}
+\usepackage{fancyvrb}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
@@ -45,29 +46,13 @@
 \definecolor{codestr}{RGB}{163,21,21}
 \definecolor{codecmt}{RGB}{0,128,0}
 
-% ─── Listings ─────────────────────────────────────────────────────────────────
-\lstset{
-  backgroundcolor=\color{codebg},
-  basicstyle=\small\ttfamily,
-  keywordstyle=\color{codekey}\bfseries,
-  stringstyle=\color{codestr},
-  commentstyle=\color{codecmt}\itshape,
-  breaklines=true,
-  breakatwhitespace=false,
-  numbers=left,
-  numberstyle=\tiny\color{ne},
-  numbersep=5pt,
-  frame=single,
-  framesep=3pt,
-  tabsize=2,
-  showstringspaces=false,
-  captionpos=b,
-}
+% Code blocks via fancyvrb
+\DefineVerbatimEnvironment{codeblock}{Verbatim}{fontsize=\small,frame=single,framesep=3pt}
 
 % ─── Comandos de status ───────────────────────────────────────────────────────
 \newcommand{\conf}{\textcolor{conf}{\textbf{CONF.}}}
-\newcommand{\nc}{\textcolor{nc}{\textbf{N.C.}}}
-\newcommand{\ne}{\textcolor{ne}{\textbf{N.E.}}}
+\newcommand{\nconf}{\textcolor{nc}{\textbf{N.C.}}}
+\newcommand{\neve}{\textcolor{ne}{\textbf{N.E.}}}
 \newcommand{\na}{\textbf{N/A}}
 
 % ─── Metadados do PDF ─────────────────────────────────────────────────────────
@@ -335,10 +320,10 @@ O repositório apresenta padrões de desenvolvimento \textbf{híbrido (AI-Assist
 % ── Bloco 3: Criptografia ─────────────────────────────────────────────────────
 \multicolumn{4}{l}{\textbf{3. Criptografia e Comunicação Segura}} \\
 \midrule
-3.1 & Comunicação protegida por TLS/HTTPS & \ne & Produção: via reverse proxy (Cloudflare Tunnel/Nginx). Desenvolvimento local: HTTP loopback (aceitável para ambiente controlado) \\
-3.2 & Bloqueio de conexões não seguras & \ne & Implementado no nível do reverse proxy em produção; não enforced internamente \\
-3.3 & Evidência de tráfego cifrado & \ne & Configuração de produção com Cloudflare documenta TLS 1.3. Sem evidência de certificado local \\
-3.4 & Dados sensíveis cifrados em repouso & \nc & Senhas: cifradas (bcrypt). data.json com histórico de conversas: não cifrado em repouso \\
+3.1 & Comunicação protegida por TLS/HTTPS & \neve & Produção: via reverse proxy (Cloudflare Tunnel/Nginx). Desenvolvimento local: HTTP loopback (aceitável para ambiente controlado) \\
+3.2 & Bloqueio de conexões não seguras & \neve & Implementado no nível do reverse proxy em produção; não enforced internamente \\
+3.3 & Evidência de tráfego cifrado & \neve & Configuração de produção com Cloudflare documenta TLS 1.3. Sem evidência de certificado local \\
+3.4 & Dados sensíveis cifrados em repouso & \nconf & Senhas: cifradas (bcrypt). data.json com histórico de conversas: não cifrado em repouso \\
 3.5 & Algoritmo criptográfico adequado & \conf & bcrypt para senhas; HS256 (HMAC-SHA256) para JWT; AES-256 implícito via TLS no transporte \\
 3.6 & Chaves criptográficas protegidas & \conf & JWT\_SECRET gerado com \texttt{crypto.randomBytes(64)} se não definido; API tokens em \texttt{.env} fora do repositório \\
 3.7 & Estratégia de criptografia documentada & \conf & Documentado em \texttt{docs/SECURITY.md} seção 3 \\
@@ -379,7 +364,7 @@ O repositório apresenta padrões de desenvolvimento \textbf{híbrido (AI-Assist
 6.7 & Identificação de ameaças e vulnerabilidades & \conf & Seção 4 deste relatório e tabela em \texttt{docs/ARCHITECTURE.md} \\
 6.8 & Associação risco à contramedida & \conf & Tabela de ameaças x contramedidas em \texttt{docs/ARCHITECTURE.md} seção final \\
 6.9 & Testes de segurança realizados & \conf & Testes funcionais documentados em \texttt{docs/SECURITY.md} seção 7 \\
-6.10 & Resultados dos testes documentados & \conf & Tabela de resultados em SECURITY.md com status ✅/❌ por caso de teste \\
+6.10 & Resultados dos testes documentados & \conf & Tabela de resultados em SECURITY.md com status \checkmark/$\times$ por caso de teste \\
 6.11 & Uso de artigos científicos e/ou normas técnicas & \conf & ISO/IEC 27001:2022, LGPD (Lei 13.709/2018), RFC 6238, RFC 7519, OWASP \\
 6.12 & Referências normalizadas & \conf & Seção 7 deste relatório com referências ABNT \\
 \midrule
@@ -403,7 +388,7 @@ O repositório apresenta padrões de desenvolvimento \textbf{híbrido (AI-Assist
 8.4 & Qualidade técnica dos diagramas & \conf & Diagramas em ASCII art estruturado + tabelas técnicas \\
 8.5 & Coerência com o sistema entregue & \conf & Todo conteúdo refere-se ao código implementado no repositório \\
 8.6 & Domínio técnico na apresentação & \conf & Evidenciado pela profundidade das implementações e documentações \\
-8.7 & Capacidade de resposta às perguntas & \ne & Avaliado na apresentação oral \\
+8.7 & Capacidade de resposta às perguntas & \neve & Avaliado na apresentação oral \\
 
 \end{longtable}
 
@@ -444,7 +429,7 @@ Dependências sem lock de integridade (hash SHA-512) & I, C & Média & Supply ch
 
 \subsubsection{Exemplo 6.1 — Mitigação de SSRF no Media Proxy (Path Traversal / Domain Whitelist)}
 
-\begin{lstlisting}[language=JavaScript, caption={Validação de domínio no media proxy}]
+\begin{Verbatim}[fontsize=\small,frame=single,framesep=3pt]
 // server/index.mjs — rota /api/media-proxy (versão segura)
 const ALLOWED_CDN_DOMAINS = [
   'mmg.whatsapp.net',
@@ -491,11 +476,11 @@ app.get('/api/media-proxy', async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
-\end{lstlisting}
+\end{Verbatim}
 
 \subsubsection{Exemplo 6.2 — Cifragem de Dados em Repouso com AES-256-GCM}
 
-\begin{lstlisting}[language=JavaScript, caption={Funções de cifragem segura para persistência}]
+\begin{Verbatim}[fontsize=\small,frame=single,framesep=3pt]
 // server/crypto-store.mjs — cifragem AES-256-GCM para dados em repouso
 import crypto from 'crypto';
 
@@ -534,11 +519,11 @@ export function decrypt(ciphertext) {
   const decrypted = Buffer.concat([decipher.update(data), decipher.final()]);
   return JSON.parse(decrypted.toString('utf8'));
 }
-\end{lstlisting}
+\end{Verbatim}
 
 \subsubsection{Exemplo 6.3 — Middleware de Rate Limiting Global}
 
-\begin{lstlisting}[language=JavaScript, caption={Rate limiter em memória sem dependências externas}]
+\begin{Verbatim}[fontsize=\small,frame=single,framesep=3pt]
 // server/rate-limit.mjs — middleware de controle de taxa de requisicoes
 const windowMs = 60 * 1000;   // janela de 1 minuto
 const maxReqs  = 100;          // maximo de 100 requisicoes por janela por IP
@@ -580,11 +565,11 @@ export function globalRateLimit(req, res, next) {
 }
 
 // Uso em index.mjs: app.use('/api', globalRateLimit);
-\end{lstlisting}
+\end{Verbatim}
 
 \subsubsection{Exemplo 6.4 — Gerenciamento de Dependências com Lock e Hashes de Integridade}
 
-\begin{lstlisting}[caption={package.json com versoes fixadas e hashes via package-lock.json}]
+\begin{Verbatim}[fontsize=\small,frame=single,framesep=3pt]
 {
   "name": "nex-chat-server",
   "version": "1.0.0",
@@ -610,7 +595,7 @@ export function globalRateLimit(req, res, next) {
 //   "resolved": "https://registry.npmjs.org/bcryptjs/-/bcryptjs-3.0.3.tgz",
 //   "integrity": "sha512-<hash-sha512-do-pacote>=="
 // }
-\end{lstlisting}
+\end{Verbatim}
 
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Conclusão do Parecer de Auditoria e Referências Bibliográficas}
@@ -658,3 +643,4 @@ O sistema, com as remediações implementadas e as recomendações pendentes apl
 \end{enumerate}
 
 \end{document}
+
