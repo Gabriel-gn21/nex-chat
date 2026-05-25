@@ -34,5 +34,10 @@ npm-debug.log*
 # PM2
 .pm2/
 
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
 # TypeScript
 *.tsbuildinfo
