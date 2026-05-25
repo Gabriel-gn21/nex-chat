@@ -1,5 +1,5 @@
 % ╔══════════════════════════════════════════════════════════════════════════════╗
-% ║  RELATÓRIO DE AUDITORIA TÉCNICA, FORENSE E DE CONFORMIDADE — NEX-CHAT      ║
+% ║  RELATÓRIO DE AUDITORIA TÉCNICA, FORENSE E DE CONFORMIDADE - NEX-CHAT      ║
 % ║  Avaliação de Segurança da Informação, LGPD, Stack Tecnológica              ║
 % ║  e Arquitetura do Projeto Nex-Chat                                          ║
 % ║  Autor: Prof. Dr. Fabiano Menegidio (Universidade de Mogi das Cruzes - UMC) ║
@@ -33,8 +33,8 @@
 \setlength{\headheight}{14pt}
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{\small Relatório de Auditoria Técnica — Nex-Chat}
-\lhead{\small Prof. Dr. Fabiano Menegidio — UMC}
+\rhead{\small Relatório de Auditoria Técnica - Nex-Chat}
+\lhead{\small Prof. Dr. Fabiano Menegidio - UMC}
 \cfoot{\thepage}
 
 % ─── Cores ────────────────────────────────────────────────────────────────────
@@ -57,7 +57,7 @@
 
 % ─── Metadados do PDF ─────────────────────────────────────────────────────────
 \hypersetup{
-  pdftitle={Relatório de Auditoria Técnica — Nex-Chat},
+  pdftitle={Relatório de Auditoria Técnica - Nex-Chat},
   pdfauthor={Prof. Dr. Fabiano Menegidio},
   pdfsubject={Segurança da Informação, LGPD, ISO/IEC 27001},
   colorlinks=true,
@@ -120,7 +120,7 @@
 \begin{description}[style=nextline]
   \item[Nome do Projeto:] Nex-Chat
   \item[Descrição:] Plataforma de atendimento via WhatsApp Business com automação de chatbot orientada a eventos, gestão de operadores humanos, integrações de pagamento (Mercado Pago/PIX) e automações externas (Make/Zapier).
-  \item[Repositório:] \texttt{nex-chat/} (monorepo — frontend + backend)
+  \item[Repositório:] \texttt{nex-chat/} (monorepo - frontend + backend)
   \item[Módulos Críticos:] \texttt{server/index.mjs}, \texttt{server/auth.mjs}, \texttt{server/engine.mjs}, \texttt{server/webhook.mjs}, \texttt{server/pod-integration.mjs}, \texttt{src/} (React SPA)
 \end{description}
 
@@ -179,7 +179,7 @@ O Nex-Chat processa \textbf{dados pessoais comuns} (Art. 5º, I da LGPD): nome e
 
 \begin{itemize}
   \item \textbf{Base legal principal:} Execução de contrato (Art. 7º, V) para dados de clientes; legítimo interesse (Art. 7º, IX) para dados de operadores
-  \item \textbf{Risco de reidentificação:} Baixo — números de telefone associados a nomes são pseudônimos no contexto do atendimento
+  \item \textbf{Risco de reidentificação:} Baixo - números de telefone associados a nomes são pseudônimos no contexto do atendimento
   \item \textbf{Risco de vazamento:} Moderado sem as remediações; baixo após implementação do módulo auth.mjs com controle de acesso JWT
 \end{itemize}
 
@@ -224,7 +224,7 @@ O repositório apresenta padrões de desenvolvimento \textbf{híbrido (AI-Assist
 
 \subsection{Confidencialidade (Score: 72/100)}
 
-\textbf{Avaliação:} Após as remediações, as credenciais de operadores são armazenadas exclusivamente como hashes bcrypt (custo 12, salt único). O JWT\_SECRET é gerado com \texttt{crypto.randomBytes(64)}. O API\_TOKEN, WEBHOOK\_SECRET e chaves de integração são armazenados em \texttt{server/.env} fora do repositório. \textbf{Demérito:} dados de conversas (data.json) não são cifrados em repouso; comunicação interna via HTTP (sem TLS local — apenas em produção via reverse proxy).
+\textbf{Avaliação:} Após as remediações, as credenciais de operadores são armazenadas exclusivamente como hashes bcrypt (custo 12, salt único). O JWT\_SECRET é gerado com \texttt{crypto.randomBytes(64)}. O API\_TOKEN, WEBHOOK\_SECRET e chaves de integração são armazenados em \texttt{server/.env} fora do repositório. \textbf{Demérito:} dados de conversas (data.json) não são cifrados em repouso; comunicação interna via HTTP (sem TLS local - apenas em produção via reverse proxy).
 
 \subsection{Integridade (Score: 65/100)}
 
@@ -247,8 +247,8 @@ O repositório apresenta padrões de desenvolvimento \textbf{híbrido (AI-Assist
 \subsubsection{Vulnerabilidades de Injeção}
 \begin{itemize}
   \item \textbf{ReDoS:} Expressões regulares em \texttt{engine.mjs} para parsing de markers (\texttt{[FOTO\_PRODUTO:URL]}, \texttt{[PAGAMENTO:pix|cartao]}) poderiam ser exploradas com inputs maliciosamente crafted via mensagens WhatsApp. \textbf{Mitigação:} Regex simples sem backtracking catastrófico; validação do lado do bot antes de processar.
-  \item \textbf{Command Injection:} Não identificado — ausência de chamadas a \texttt{child\_process.exec()} com input do usuário.
-  \item \textbf{SQL Injection:} Não aplicável — ausência de banco de dados relacional.
+  \item \textbf{Command Injection:} Não identificado - ausência de chamadas a \texttt{child\_process.exec()} com input do usuário.
+  \item \textbf{SQL Injection:} Não aplicável - ausência de banco de dados relacional.
 \end{itemize}
 
 \subsubsection{Path Traversal e Insecure Deserialization}
@@ -265,7 +265,7 @@ O repositório apresenta padrões de desenvolvimento \textbf{híbrido (AI-Assist
 
 \subsubsection{Supply Chain Attacks}
 \begin{itemize}
-  \item Dependências fixadas com \texttt{\^} (caret) — atualiza minor/patch automaticamente, sem verificação de integridade por hash.
+  \item Dependências fixadas com \texttt{\^} (caret) - atualiza minor/patch automaticamente, sem verificação de integridade por hash.
   \item \textbf{Recomendação:} usar \texttt{npm ci} com \texttt{package-lock.json} contendo hashes SHA-512 para garantia de integridade das dependências.
 \end{itemize}
 
@@ -310,7 +310,7 @@ O repositório apresenta padrões de desenvolvimento \textbf{híbrido (AI-Assist
 \multicolumn{4}{l}{\textbf{2. Recuperação de Senha}} \\
 \midrule
 2.1 & Funcionalidade de recuperação de senha implementada & \conf & \texttt{POST /auth/recovery/request} gera token. \texttt{POST /auth/recovery/reset} redefine senha com token \\
-2.2 & Token criptograficamente seguro & \conf & \texttt{crypto.randomBytes(48).toString('hex')} — 96 caracteres hexadecimais (384 bits de entropia) \\
+2.2 & Token criptograficamente seguro & \conf & \texttt{crypto.randomBytes(48).toString('hex')} - 96 caracteres hexadecimais (384 bits de entropia) \\
 2.3 & Token com tempo de expiração & \conf & \texttt{RECOVERY\_TTL = 30 * 60 * 1000} (30 minutos). Verificado em \texttt{consumeRecoveryToken()} \\
 2.4 & Token invalidado após uso & \conf & \texttt{recoveryTokens.delete(token)} executado imediatamente após verificação bem-sucedida \\
 2.5 & Falha correta para token expirado & \conf & Retorna HTTP 400 com mensagem "Token expirado" e remove da Map \\
@@ -371,7 +371,7 @@ O repositório apresenta padrões de desenvolvimento \textbf{híbrido (AI-Assist
 % ── Bloco 7: Resumo Científico ────────────────────────────────────────────────
 \multicolumn{4}{l}{\textbf{7. Resumo Científico}} \\
 \midrule
-7.1 & Resumo entre 200 e 300 palavras & \conf & \texttt{docs/resumo-cientifico.md} — 268 palavras \\
+7.1 & Resumo entre 200 e 300 palavras & \conf & \texttt{docs/resumo-cientifico.md} - 268 palavras \\
 7.2 & Objetivo claramente definido & \conf & Objetivo: demonstrar aplicação de ISO 27001 e LGPD em sistema de produção \\
 7.3 & Metodologia técnica descrita & \conf & Metodologia: bcrypt, JWT, 2FA TOTP, rate limit, endpoints LGPD \\
 7.4 & Mecanismos de segurança apresentados & \conf & Hash, sessão, 2FA, recuperação, logs, conformidade LGPD \\
@@ -427,10 +427,10 @@ Dependências sem lock de integridade (hash SHA-512) & I, C & Média & Supply ch
 
 \subsection{Exemplos Práticos de Código Corretivo (JavaScript/Node.js ESM)}
 
-\subsubsection{Exemplo 6.1 — Mitigação de SSRF no Media Proxy (Path Traversal / Domain Whitelist)}
+\subsubsection{Exemplo 6.1 - Mitigação de SSRF no Media Proxy (Path Traversal / Domain Whitelist)}
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=3pt]
-// server/index.mjs — rota /api/media-proxy (versão segura)
+// server/index.mjs - rota /api/media-proxy (versão segura)
 const ALLOWED_CDN_DOMAINS = [
   'mmg.whatsapp.net',
   'media.whatsapp.net',
@@ -478,10 +478,10 @@ app.get('/api/media-proxy', async (req, res) => {
 });
 \end{Verbatim}
 
-\subsubsection{Exemplo 6.2 — Cifragem de Dados em Repouso com AES-256-GCM}
+\subsubsection{Exemplo 6.2 - Cifragem de Dados em Repouso com AES-256-GCM}
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=3pt]
-// server/crypto-store.mjs — cifragem AES-256-GCM para dados em repouso
+// server/crypto-store.mjs - cifragem AES-256-GCM para dados em repouso
 import crypto from 'crypto';
 
 const ALGORITHM = 'aes-256-gcm';
@@ -521,10 +521,10 @@ export function decrypt(ciphertext) {
 }
 \end{Verbatim}
 
-\subsubsection{Exemplo 6.3 — Middleware de Rate Limiting Global}
+\subsubsection{Exemplo 6.3 - Middleware de Rate Limiting Global}
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=3pt]
-// server/rate-limit.mjs — middleware de controle de taxa de requisicoes
+// server/rate-limit.mjs - middleware de controle de taxa de requisicoes
 const windowMs = 60 * 1000;   // janela de 1 minuto
 const maxReqs  = 100;          // maximo de 100 requisicoes por janela por IP
 
@@ -567,7 +567,7 @@ export function globalRateLimit(req, res, next) {
 // Uso em index.mjs: app.use('/api', globalRateLimit);
 \end{Verbatim}
 
-\subsubsection{Exemplo 6.4 — Gerenciamento de Dependências com Lock e Hashes de Integridade}
+\subsubsection{Exemplo 6.4 - Gerenciamento de Dependências com Lock e Hashes de Integridade}
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=3pt]
 {
@@ -603,7 +603,7 @@ export function globalRateLimit(req, res, next) {
 
 \subsection{Conclusão}
 
-O projeto \textbf{Nex-Chat} demonstra maturidade arquitetural adequada para uma plataforma de atendimento de médio porte, com separação clara de responsabilidades entre módulos, integração robusta com a Evolution API e motor de chatbot funcional. Historicamente, o ponto crítico do sistema era a ausência de um módulo formal de autenticação — situação remediada durante esta auditoria com a implementação do \texttt{auth.mjs}, que introduziu hash bcrypt (custo 12), sessões JWT com expiração e blacklist, 2FA TOTP (RFC 6238), proteção contra força bruta e fluxo seguro de recuperação de senha.
+O projeto \textbf{Nex-Chat} demonstra maturidade arquitetural adequada para uma plataforma de atendimento de médio porte, com separação clara de responsabilidades entre módulos, integração robusta com a Evolution API e motor de chatbot funcional. Historicamente, o ponto crítico do sistema era a ausência de um módulo formal de autenticação - situação remediada durante esta auditoria com a implementação do \texttt{auth.mjs}, que introduziu hash bcrypt (custo 12), sessões JWT com expiração e blacklist, 2FA TOTP (RFC 6238), proteção contra força bruta e fluxo seguro de recuperação de senha.
 
 Do ponto de vista da LGPD, o sistema foi enquadrado no processamento de dados pessoais comuns com base legal de execução de contrato (Art. 7º, V), sem tratamento de dados sensíveis. Os endpoints de exercício de direitos (acesso, portabilidade, eliminação, consentimento) foram implementados conforme Art. 18 da lei.
 
@@ -623,7 +623,7 @@ O sistema, com as remediações implementadas e as recomendações pendentes apl
 \subsection{Referências Bibliográficas}
 
 \begin{enumerate}
-  \item ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. \textbf{ABNT NBR ISO/IEC 27001:2022}: Tecnologia da informação — Técnicas de segurança — Sistemas de gestão da segurança da informação — Requisitos. Rio de Janeiro: ABNT, 2022.
+  \item ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. \textbf{ABNT NBR ISO/IEC 27001:2022}: Tecnologia da informação - Técnicas de segurança - Sistemas de gestão da segurança da informação - Requisitos. Rio de Janeiro: ABNT, 2022.
 
   \item BRASIL. \textbf{Lei nº 13.709, de 14 de agosto de 2018}. Lei Geral de Proteção de Dados Pessoais (LGPD). Diário Oficial da União, Brasília, DF, 15 ago. 2018.
 
@@ -631,7 +631,7 @@ O sistema, com as remediações implementadas e as recomendações pendentes apl
 
   \item INTERNET ENGINEERING TASK FORCE. \textbf{RFC 7519}: JSON Web Token (JWT). IETF, 2015. Disponível em: \url{https://datatracker.ietf.org/doc/html/rfc7519}.
 
-  \item OPEN WEB APPLICATION SECURITY PROJECT. \textbf{OWASP Top 10}: 2021 — The Ten Most Critical Web Application Security Risks. OWASP Foundation, 2021. Disponível em: \url{https://owasp.org/Top10/}.
+  \item OPEN WEB APPLICATION SECURITY PROJECT. \textbf{OWASP Top 10}: 2021 - The Ten Most Critical Web Application Security Risks. OWASP Foundation, 2021. Disponível em: \url{https://owasp.org/Top10/}.
 
   \item OPEN WEB APPLICATION SECURITY PROJECT. \textbf{OWASP Password Storage Cheat Sheet}. OWASP Foundation, 2024. Disponível em: \url{https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html}.
 
@@ -639,7 +639,7 @@ O sistema, com as remediações implementadas e as recomendações pendentes apl
 
   \item STALLINGS, W. \textbf{Cryptography and Network Security}: Principles and Practice. 8. ed. Pearson, 2022.
 
-  \item NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY. \textbf{NIST Special Publication 800-63B}: Digital Identity Guidelines — Authentication and Lifecycle Management. Gaithersburg: NIST, 2020.
+  \item NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY. \textbf{NIST Special Publication 800-63B}: Digital Identity Guidelines - Authentication and Lifecycle Management. Gaithersburg: NIST, 2020.
 \end{enumerate}
 
 \end{document}

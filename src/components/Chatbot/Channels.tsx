@@ -233,7 +233,7 @@ function ChannelCard({
           ) : (
             <p className="text-sm text-orange-500 mt-0.5 flex items-center gap-1">
               <AlertCircle size={13} />
-              Número não vinculado — clique em &ldquo;Vincular número&rdquo; para ativar
+              Número não vinculado - clique em &ldquo;Vincular número&rdquo; para ativar
             </p>
           )}
         </div>
@@ -316,7 +316,7 @@ function CreateModal({ onClose, onSave }: { onClose: () => void; onSave: (name: 
   );
 }
 
-// ─── Modal: vincular número — Meta API ou QR Code ─────────────────────────────
+// ─── Modal: vincular número - Meta API ou QR Code ─────────────────────────────
 type LinkMode    = 'meta' | 'qrcode';
 type VerifyState = 'idle' | 'loading' | 'ok' | 'error';
 type QrState     = 'idle' | 'loading' | 'waiting' | 'connected' | 'error';
@@ -334,7 +334,7 @@ function LinkModal({
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto">
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 sticky top-0 bg-white z-10">
           <div>
-            <h3 className="font-semibold text-slate-800">Vincular número — {channel.name}</h3>
+            <h3 className="font-semibold text-slate-800">Vincular número - {channel.name}</h3>
             <p className="text-xs text-slate-500 mt-0.5">Escolha como conectar este canal</p>
           </div>
           <button onClick={onClose} className="w-8 h-8 rounded-lg text-slate-400 hover:bg-slate-100 flex items-center justify-center"><X size={18} /></button>
@@ -449,7 +449,7 @@ function MetaLinkPanel({
           <p className="text-sm font-semibold text-accent-700 flex items-center gap-1.5"><CheckCircle size={16} /> Número verificado</p>
           <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
             <span className="text-slate-500">Número:</span><span className="font-medium">{metaInfo.displayPhone}</span>
-            <span className="text-slate-500">Nome:</span><span className="font-medium">{metaInfo.verifiedName || '—'}</span>
+            <span className="text-slate-500">Nome:</span><span className="font-medium">{metaInfo.verifiedName || ' - '}</span>
             <span className="text-slate-500">Qualidade:</span>
             <span className={clsx('font-medium', QUALITY_COLOR[metaInfo.qualityRating]?.split(' ')[0])}>{metaInfo.qualityRating}</span>
           </div>
@@ -540,7 +540,7 @@ function QrCodeLinkPanel({
     setQrState('loading'); setQrError(''); setQrBase64('');
     try {
       // Se a instância já existe (reconexão), faz logout para limpar sessão
-      // e vai direto para /instance/connect — sem tentar criar de novo.
+      // e vai direto para /instance/connect - sem tentar criar de novo.
       const existingInstance = channel.evolutionInstanceName;
       if (existingInstance && existingInstance === instanceName) {
         // Força logout para limpar sessão corrompida (ignora erro se já estava desconectado)
@@ -568,7 +568,7 @@ function QrCodeLinkPanel({
       }
 
       // ── Nova instância ──────────────────────────────────────────────
-      // Cria instância — v1 já retorna QR no create
+      // Cria instância - v1 já retorna QR no create
       // v2 requer integration:WHATSAPP-BAILEYS (v1 ignora o campo)
       const createRes  = await fetch(`${base()}/instance/create`, {
         method: 'POST',
@@ -577,7 +577,7 @@ function QrCodeLinkPanel({
       });
       const createData = await createRes.json() as Record<string, unknown>;
 
-      // Instância pode já existir (409/403) — segue para buscar QR
+      // Instância pode já existir (409/403) - segue para buscar QR
       const isAlreadyExists = createRes.status === 409 ||
         (createRes.status === 403 && JSON.stringify(createData).toLowerCase().includes('already in use'));
 
@@ -604,7 +604,7 @@ function QrCodeLinkPanel({
         }
       }
 
-      if (!qr) throw new Error('Não foi possível obter o QR Code — verifique os logs do Docker.');
+      if (!qr) throw new Error('Não foi possível obter o QR Code - verifique os logs do Docker.');
 
       setQrBase64(qr);
       setQrState('waiting');
@@ -629,7 +629,7 @@ function QrCodeLinkPanel({
     setQrExpiry(expiresAt);
     expiryRef.current = setTimeout(async () => {
       if (pollRef.current) {
-        // Ainda aguardando — renova QR
+        // Ainda aguardando - renova QR
         try {
           const res  = await fetch(`${base()}/instance/connect/${instanceName}`, { headers: hdrs() });
           const data = await res.json() as Record<string, unknown>;
@@ -728,7 +728,7 @@ function QrCodeLinkPanel({
       {/* ── Passo 0: banner informativo ── */}
       <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 text-xs text-purple-800 space-y-2">
         <p className="font-semibold text-purple-900 flex items-center gap-1.5">
-          <QrCode size={14} /> Conexão via QR Code — Evolution API (Baileys)
+          <QrCode size={14} /> Conexão via QR Code - Evolution API (Baileys)
         </p>
         <p>Funciona com a <strong>Evolution API</strong> rodando localmente via Docker.
           Os campos abaixo já estão preenchidos com as credenciais do <code>docker-compose</code>
@@ -804,7 +804,7 @@ function QrCodeLinkPanel({
               Aguardando leitura do QR Code…
             </div>
             {qrExpiry && countdown > 15 && (
-              <p className="text-xs text-slate-400">Expira em {countdown}s — será renovado automaticamente</p>
+              <p className="text-xs text-slate-400">Expira em {countdown}s - será renovado automaticamente</p>
             )}
           </div>
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-600 space-y-1 w-full">
@@ -991,16 +991,16 @@ function ViewModal({ channel: ch, onClose }: { channel: Channel; onClose: () => 
   const rows: Row[] = isQR
     ? [
         { label: 'Nome',            value: ch.name },
-        { label: 'Número',          value: ch.phoneNumber || '—' },
-        { label: 'Instância',       value: ch.evolutionInstanceName ?? '—', mono: true },
-        { label: 'URL Evolution',   value: ch.evolutionApiUrl ?? '—', mono: true },
+        { label: 'Número',          value: ch.phoneNumber || ' - ' },
+        { label: 'Instância',       value: ch.evolutionInstanceName ?? ' - ', mono: true },
+        { label: 'URL Evolution',   value: ch.evolutionApiUrl ?? ' - ', mono: true },
         { label: 'API Key',         value: ch.evolutionApiKey ?? '', mono: true, secret: true },
         { label: 'Tipo de conexão', value: 'QR Code (Baileys/Evolution API)' },
       ]
     : [
         { label: 'Nome',            value: ch.name },
-        { label: 'Número',          value: ch.phoneNumber || '—' },
-        { label: 'Nome verificado', value: ch.verifiedName || '—' },
+        { label: 'Número',          value: ch.phoneNumber || ' - ' },
+        { label: 'Nome verificado', value: ch.verifiedName || ' - ' },
         { label: 'Phone Number ID', value: ch.phoneNumberId, mono: true },
         { label: 'WABA ID',         value: ch.wabaId, mono: true },
         { label: 'Access Token',    value: ch.accessToken, mono: true, secret: true },
@@ -1014,7 +1014,7 @@ function ViewModal({ channel: ch, onClose }: { channel: Channel; onClose: () => 
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 sticky top-0 bg-white z-10">
           <div>
             <h3 className="font-semibold text-slate-800">Detalhes do canal</h3>
-            <p className="text-xs text-slate-500 mt-0.5">Apenas visualização — canal vinculado não pode ser editado</p>
+            <p className="text-xs text-slate-500 mt-0.5">Apenas visualização - canal vinculado não pode ser editado</p>
           </div>
           <button onClick={onClose} className="w-8 h-8 rounded-lg text-slate-400 hover:bg-slate-100 flex items-center justify-center"><X size={18} /></button>
         </div>
@@ -1030,7 +1030,7 @@ function ViewModal({ channel: ch, onClose }: { channel: Channel; onClose: () => 
                 {secret ? (
                   <div className="flex items-center gap-2 flex-1 min-w-0">
                     <code className="text-xs text-slate-600 truncate flex-1">
-                      {value ? `${value.slice(0, 12)}${'•'.repeat(Math.max(0, value.length - 12))}` : '—'}
+                      {value ? `${value.slice(0, 12)}${'•'.repeat(Math.max(0, value.length - 12))}` : ' - '}
                     </code>
                     <button onClick={copyToken} className="shrink-0 text-slate-400 hover:text-primary-600 transition" title="Copiar">
                       {copiedToken ? <CheckCircle size={13} className="text-accent-500" /> : <Copy size={13} />}
@@ -1038,7 +1038,7 @@ function ViewModal({ channel: ch, onClose }: { channel: Channel; onClose: () => 
                   </div>
                 ) : (
                   <span className={clsx('text-sm text-slate-700 flex-1 truncate', mono && 'font-mono text-xs')}>
-                    {value || '—'}
+                    {value || ' - '}
                   </span>
                 )}
               </div>

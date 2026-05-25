@@ -408,13 +408,13 @@ export default function Stock() {
                     {filteredProducts.map(p => (
                       <tr key={p.id} className="hover:bg-slate-50/60 transition-colors">
                         <td className="px-4 py-3 font-medium text-slate-800">{p.name}</td>
-                        <td className="px-4 py-3 text-slate-500">{p.category || '—'}</td>
+                        <td className="px-4 py-3 text-slate-500">{p.category || ' - '}</td>
                         <td className="px-4 py-3">
                           <span className={qtyColor(p)}>{fmt(p.quantity)}</span>
                         </td>
                         <td className="px-4 py-3 text-slate-500">{p.unit}</td>
-                        <td className="px-4 py-3 text-slate-500">{p.min_alert > 0 ? fmt(p.min_alert) : '—'}</td>
-                        <td className="px-4 py-3 text-slate-600">{p.price > 0 ? fmtR(p.price) : '—'}</td>
+                        <td className="px-4 py-3 text-slate-500">{p.min_alert > 0 ? fmt(p.min_alert) : ' - '}</td>
+                        <td className="px-4 py-3 text-slate-600">{p.price > 0 ? fmtR(p.price) : ' - '}</td>
                         <td className="px-4 py-3 text-slate-400 text-xs">{fmtDt(p.updated_at)}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-1">
@@ -471,7 +471,7 @@ export default function Stock() {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-slate-600">{fmt(m.balance)}</td>
-                      <td className="px-4 py-3 text-slate-500">{m.reason || '—'}</td>
+                      <td className="px-4 py-3 text-slate-500">{m.reason || ' - '}</td>
                     </tr>
                   ))}
                 </tbody>

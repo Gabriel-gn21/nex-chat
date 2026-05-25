@@ -1,5 +1,5 @@
 /**
- * pix.mjs — Integração com Mercado Pago para geração de cobranças PIX
+ * pix.mjs - Integração com Mercado Pago para geração de cobranças PIX
  */
 import { store } from './store.mjs';
 
@@ -21,7 +21,7 @@ export async function generatePixPayment({ amount, description }) {
   // Chave de idempotência evita cobranças duplicadas em caso de retry
   const idempotencyKey = `nex-pix-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
-  console.log(`[pix] Gerando cobrança R$ ${amountNum.toFixed(2)} — "${description}"`);
+  console.log(`[pix] Gerando cobrança R$ ${amountNum.toFixed(2)} - "${description}"`);
 
   const res = await fetch('https://api.mercadopago.com/v1/payments', {
     method: 'POST',

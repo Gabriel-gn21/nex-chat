@@ -190,14 +190,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [authState, persistSession]
   );
 
-  // ── Setup 2FA — generate new secret ────────────────────────────────────
+  // ── Setup 2FA - generate new secret ────────────────────────────────────
   const setup2FA = useCallback((): { secret: string; uri: string } => {
     const secret = generateTOTPSecret();
     const uri = getTOTPUri(secret, authState.user?.email ?? 'user@nexchat');
     return { secret, uri };
   }, [authState.user]);
 
-  // ── Confirm 2FA — validate first code and save secret ──────────────────
+  // ── Confirm 2FA - validate first code and save secret ──────────────────
   const confirm2FA = useCallback(
     (secret: string, code: string): boolean => {
       if (!authState.user) return false;

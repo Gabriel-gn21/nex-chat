@@ -1,5 +1,5 @@
 /**
- * webhook.mjs — processa eventos enviados pela Evolution API v1.x
+ * webhook.mjs - processa eventos enviados pela Evolution API v1.x
  */
 import { store, save }           from './store.mjs';
 import { runFlow }               from './engine.mjs';
@@ -81,7 +81,7 @@ export async function handleWebhook(req, res) {
     const waMsgId = key.id || data.messageId || '';
     if (waMsgId) {
       if (recentMsgIds.has(waMsgId)) {
-        console.log(`[webhook] Duplicata detectada — ignorando msgId=${waMsgId}`);
+        console.log(`[webhook] Duplicata detectada - ignorando msgId=${waMsgId}`);
         return;
       }
       recentMsgIds.add(waMsgId);
@@ -113,7 +113,7 @@ export async function handleWebhook(req, res) {
 
     // Se for mídia sem base64 no payload, baixa agora via Evolution API (síncrono)
     if (mediaInfo && !mediaInfo.base64url && mediaInfo.url) {
-      console.log(`[webhook] Mídia sem base64 — baixando via Evolution API…`);
+      console.log(`[webhook] Mídia sem base64 - baixando via Evolution API…`);
       const earlyChannel = store.channels[instance];
       if (earlyChannel) {
         const b64 = await getMediaBase64(earlyChannel, { key: data.key, message: data.message })
@@ -122,7 +122,7 @@ export async function handleWebhook(req, res) {
           mediaInfo.base64url = b64;
           console.log(`[webhook] Mídia baixada com sucesso (${mediaInfo.type})`);
         } else {
-          console.warn(`[webhook] Não foi possível baixar mídia — usando URL como fallback`);
+          console.warn(`[webhook] Não foi possível baixar mídia - usando URL como fallback`);
         }
       }
     }
@@ -185,7 +185,7 @@ export async function handleWebhook(req, res) {
           .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))[0];
 
       if (!conv) {
-        // Operador iniciou contato por um número que nunca teve conversa — cria nova
+        // Operador iniciou contato por um número que nunca teve conversa - cria nova
         conv = {
           id:           `conv_${Date.now()}_${Math.random().toString(36).slice(2,6)}`,
           contactId:    phone,
@@ -286,7 +286,7 @@ export async function handleWebhook(req, res) {
             testMode:   false,           // limpa flag após usar
             updatedAt:  new Date().toISOString(),
           };
-          if (wasModeTest) console.log(`[webhook] Conversa ${conv.id} reaberta via Modo Teste — 24 h ignoradas`);
+          if (wasModeTest) console.log(`[webhook] Conversa ${conv.id} reaberta via Modo Teste - 24 h ignoradas`);
           conv = store.conversations[conv.id];
           console.log(`[webhook] Conversa ${conv.id} reaberta após 24 h → status="${newStatus}" (botInitiated=${wasBot}, hasBotActive=${hasBotActive})`);
         }
@@ -379,7 +379,7 @@ export async function handleWebhook(req, res) {
 
     // ── Reabertura dentro de 24 h: bot não deve ser acionado ─────
     if (skipBot) {
-      console.log(`[webhook] Reabertura dentro de 24 h — bot não acionado, conversa em atendimento.`);
+      console.log(`[webhook] Reabertura dentro de 24 h - bot não acionado, conversa em atendimento.`);
       return;
     }
 
@@ -414,7 +414,7 @@ export async function handleWebhook(req, res) {
     const currentStatus  = store.conversations[conv.id]?.status;
     const isBotInitiated = store.conversations[conv.id]?.botInitiated !== false; // undefined → legado → permite
     if (currentStatus !== 'bot') {
-      console.log(`[webhook] Conversa status="${currentStatus}" — bot não acionado, humano no controle.`);
+      console.log(`[webhook] Conversa status="${currentStatus}" - bot não acionado, humano no controle.`);
       return;
     }
     if (!isBotInitiated) {
@@ -422,7 +422,7 @@ export async function handleWebhook(req, res) {
       store.conversations[conv.id] = { ...store.conversations[conv.id], status: 'open' };
       broadcast('conversation_updated', store.conversations[conv.id]);
       save();
-      console.log(`[webhook] Conversa ${conv.id} marcada como não-bot (botInitiated=false) — status corrigido para 'open'.`);
+      console.log(`[webhook] Conversa ${conv.id} marcada como não-bot (botInitiated=false) - status corrigido para 'open'.`);
       return;
     }
 
@@ -453,8 +453,8 @@ export async function handleWebhook(req, res) {
 
     // ── Debounce de input: combina mensagens enviadas em sequência ─────────────
     // Só ativa quando o bot está aguardando input de texto livre (não choice,
-    // media ou location — nesses casos a primeira resposta já é definitiva).
-    // Imagens (base64) também NÃO entram no buffer — são processadas imediatamente.
+    // media ou location - nesses casos a primeira resposta já é definitiva).
+    // Imagens (base64) também NÃO entram no buffer - são processadas imediatamente.
     const isMediaInput = effectiveInput.startsWith('data:') || !!mediaInfo;
     if (session.waitingFor === 'input' && !isMediaInput) {
       const bufKey = sessionKey; // "phone:channelId"
@@ -511,7 +511,7 @@ function extractText(msg, data) {
     return msg.listResponseMessage.singleSelectReply.selectedRowId;
   if (msg.templateButtonReplyMessage?.selectedDisplayText)
     return msg.templateButtonReplyMessage.selectedDisplayText;
-  // Nota: imageMessage.caption NÃO é extraído aqui — a caption segue junto com
+  // Nota: imageMessage.caption NÃO é extraído aqui - a caption segue junto com
   // a mídia em extractMedia() para que a IA receba imagem + texto juntos.
   if (msg.documentMessage?.caption)           return msg.documentMessage.caption;
   if (data.body)                              return data.body;

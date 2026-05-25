@@ -1,5 +1,5 @@
 /**
- * store.mjs — armazenamento em memória com persistência em arquivo
+ * store.mjs - armazenamento em memória com persistência em arquivo
  */
 import fs   from 'fs';
 import path from 'path';

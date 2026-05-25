@@ -1,5 +1,5 @@
 /**
- * timer.mjs — Job de background para expiração do nó Temporizador (logic_timer)
+ * timer.mjs - Job de background para expiração do nó Temporizador (logic_timer)
  *
  * Verifica a cada 3 segundos se alguma sessão está aguardando resposta
  * com o temporizador vencido. Se sim, aciona o caminho "timeout" no fluxo.
@@ -15,13 +15,13 @@ export function startTimerJob() {
       if (session.waitingFor !== 'timer') continue;
       if (!session.timerExpiry || now < session.timerExpiry) continue;
 
-      // Chatbots são indexados pelo próprio id, não pelo channelId —
+      // Chatbots são indexados pelo próprio id, não pelo channelId  - 
       // precisa iterar para encontrar o bot ativo do canal da sessão.
       const bot = Object.values(store.chatbots).find(
         b => b.channelId === session.channelId && b.status === 'active'
       ) ?? null;
       if (!bot) {
-        // Sem bot associado — limpa estado para não ficar em loop
+        // Sem bot associado - limpa estado para não ficar em loop
         session.waitingFor  = null;
         session.timerExpiry = null;
         save();

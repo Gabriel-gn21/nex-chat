@@ -1,5 +1,5 @@
 /**
- * evolution.mjs — cliente para a Evolution API v1.x
+ * evolution.mjs - cliente para a Evolution API v1.x
  */
 
 const mediaTypeMap = {
@@ -122,8 +122,8 @@ export async function sendMenu(channel, phone, title, body, items) {
 
 /**
  * Envia imagem a partir de string base64 (ex: QR Code PIX).
- * @param {string} base64 — conteúdo base64 puro (sem prefixo data:image)
- * @param {string} caption — legenda opcional
+ * @param {string} base64 - conteúdo base64 puro (sem prefixo data:image)
+ * @param {string} caption - legenda opcional
  */
 export async function sendImageBase64(channel, phone, base64, caption = '') {
   const { evolutionApiUrl: url, evolutionApiKey: key, evolutionInstanceName: inst } = channel;

@@ -21,7 +21,7 @@ export const SERVER_URL = `http://${window.location.hostname}:3001`;
 // Token de autenticação injetado pelo Vite a partir do .env.local
 const API_TOKEN = import.meta.env.VITE_API_TOKEN || '';
 
-// Helper: fetch autenticado — injeta Bearer token em todas as chamadas ao servidor
+// Helper: fetch autenticado - injeta Bearer token em todas as chamadas ao servidor
 export function apiFetch(input: RequestInfo | URL, init: RequestInit = {}): Promise<Response> {
   const headers = new Headers(init.headers);
   if (API_TOKEN) headers.set('Authorization', `Bearer ${API_TOKEN}`);
@@ -96,7 +96,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const configRef     = useRef({ channels, chatbots, groups, knowledgeBases });
 
   // ─── Sons de notificação via Web Audio API ──────────────────────────────────
-  // Gerados programaticamente — sem arquivos externos.
+  // Gerados programaticamente - sem arquivos externos.
   // O navegador exige interação prévia do usuário para reproduzir áudio (autoplay policy);
   // após o operador clicar em qualquer lugar da UI os sons passam a funcionar normalmente.
   const playSound = useCallback((type: 'new_conversation' | 'new_message') => {
@@ -119,11 +119,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       };
 
       if (type === 'new_conversation') {
-        // Ding-dong ascendente — nova conversa
+        // Ding-dong ascendente - nova conversa
         tone(880,  ctx.currentTime,        0.30);
         tone(1100, ctx.currentTime + 0.20, 0.35);
       } else {
-        // Bip simples — nova mensagem
+        // Bip simples - nova mensagem
         tone(700, ctx.currentTime, 0.22, 0.28);
       }
     } catch { /* silencia se Web Audio não estiver disponível */ }
@@ -158,7 +158,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // ── SSE — recebe eventos em tempo real ───────────────────────────────────
+  // ── SSE - recebe eventos em tempo real ───────────────────────────────────
   useEffect(() => {
     let es: EventSource | null = null;
     let retryTimer: ReturnType<typeof setTimeout>;
@@ -208,7 +208,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           if (prev.find(c => c.id === conv.id)) return prev;
           return [conv, ...prev];
         });
-        // Toca som de nova conversa (sempre — independente da tela aberta)
+        // Toca som de nova conversa (sempre - independente da tela aberta)
         playSound('new_conversation');
       });
 
@@ -310,7 +310,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // ── Enviar mensagem via servidor (que chama Evolution API) ────────────────
   const sendMessage = useCallback(async (conversationId: string, content: string) => {
-    // Mensagem otimista — substituída pelo SSE quando a real chegar
+    // Mensagem otimista - substituída pelo SSE quando a real chegar
     const optimisticId = `opt_${Date.now()}`;
     const optimistic: Message = {
       id:             optimisticId,
@@ -331,7 +331,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content }),
       });
-      // Não processa a resposta da API — o SSE entregará a mensagem real
+      // Não processa a resposta da API - o SSE entregará a mensagem real
       // e substituirá o placeholder otimista (ver handler message_new abaixo)
     } catch (err) {
       // Remove o placeholder otimista se a requisição falhou

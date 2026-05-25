@@ -265,7 +265,7 @@ function AttendanceReport({ data, periodLabel }: { data: ReportData; periodLabel
         />
         <StatCard
           title="Tempo Médio"
-          value={summary.avgTime > 0 ? `${summary.avgTime}min` : '—'}
+          value={summary.avgTime > 0 ? `${summary.avgTime}min` : ' - '}
           sub="Da abertura ao encerramento"
           icon={Clock}
           color="bg-purple-500"
@@ -394,7 +394,7 @@ function ChannelsReport({ data, periodLabel }: { data: ReportData; periodLabel: 
                         </span>
                       </td>
                       <td className="px-5 py-3 text-right text-sm text-slate-600">
-                        {ch.tempo_medio > 0 ? `${ch.tempo_medio}min` : '—'}
+                        {ch.tempo_medio > 0 ? `${ch.tempo_medio}min` : ' - '}
                       </td>
                     </tr>
                   );
@@ -429,7 +429,7 @@ function ChatbotReport({ data, periodLabel }: { data: ReportData; periodLabel: s
         />
         <StatCard
           title="Resolvidos pelo Bot"
-          value={initiated > 0 ? `${resolvedPct}%` : '—'}
+          value={initiated > 0 ? `${resolvedPct}%` : ' - '}
           sub={`${resolvedBot} atendimentos`}
           icon={CheckCircle}
           color="bg-accent-500"
@@ -653,7 +653,7 @@ function TabulationReport({
                           ? f.type === 'number'
                             ? Number(r.tabulation[f.id]).toLocaleString('pt-BR', f.id === 'valor' ? { style: 'currency', currency: 'BRL' } : {})
                             : String(r.tabulation[f.id])
-                          : <span className="text-slate-300">—</span>
+                          : <span className="text-slate-300"> - </span>
                         }
                       </td>
                     ))}

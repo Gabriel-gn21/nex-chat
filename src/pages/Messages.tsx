@@ -42,7 +42,7 @@ export default function Messages({ onMobileChatChange }: MessagesProps) {
 
   return (
     <div className="flex flex-1 h-full min-h-0 overflow-hidden">
-      {/* Lista — tela cheia no mobile, largura fixa no desktop */}
+      {/* Lista - tela cheia no mobile, largura fixa no desktop */}
       <div className={[
         'flex-col h-full min-h-0 overflow-hidden',
         'w-full md:w-80 md:flex md:shrink-0',
@@ -51,7 +51,7 @@ export default function Messages({ onMobileChatChange }: MessagesProps) {
         <ConversationList onSelect={handleSelect} />
       </div>
 
-      {/* Chat — tela cheia no mobile, flex-1 no desktop */}
+      {/* Chat - tela cheia no mobile, flex-1 no desktop */}
       <div className={[
         'flex-col flex-1 min-w-0 min-h-0 overflow-hidden',
         mobileView === 'list' ? 'hidden md:flex' : 'flex',

@@ -41,3 +41,10 @@ npm-debug.log*
 
 # TypeScript
 *.tsbuildinfo
+
+# LaTeX generated files
+docs/*.aux
+docs/*.toc
+docs/*.out
+docs/*.log
+docs/*.synctex.gz

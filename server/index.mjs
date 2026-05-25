@@ -1,5 +1,5 @@
 /**
- * index.mjs — Servidor principal do Nex-Chat
+ * index.mjs - Servidor principal do Nex-Chat
  * Porta 3001 | Recebe webhooks da Evolution API e serve dados ao frontend
  */
 import express    from 'express';
@@ -37,15 +37,15 @@ const API_TOKEN      = process.env.API_TOKEN || '';
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || '';
 const MAKE_WEBHOOK_URL = process.env.MAKE_WEBHOOK_URL || '';
 
-if (!API_TOKEN) console.warn('[security] ⚠️  API_TOKEN não definido — rotas /api/* SEM autenticação!');
-if (!WEBHOOK_SECRET) console.warn('[security] ⚠️  WEBHOOK_SECRET não definido — webhook SEM validação de secret!');
+if (!API_TOKEN) console.warn('[security] ⚠️  API_TOKEN não definido - rotas /api/* SEM autenticação!');
+if (!WEBHOOK_SECRET) console.warn('[security] ⚠️  WEBHOOK_SECRET não definido - webhook SEM validação de secret!');
 if (MAKE_WEBHOOK_URL) console.log(`[make-webhook] URL configurada: ${MAKE_WEBHOOK_URL.slice(0, 60)}...`);
-else console.warn('[make-webhook] ⚠️  MAKE_WEBHOOK_URL não definida — webhook de vendas desativado.');
+else console.warn('[make-webhook] ⚠️  MAKE_WEBHOOK_URL não definida - webhook de vendas desativado.');
 
 const app  = express();
 const PORT = 3001;
 
-// ─── CORS — restringe às origens conhecidas do frontend ───────────────────────
+// ─── CORS - restringe às origens conhecidas do frontend ───────────────────────
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
@@ -65,9 +65,9 @@ app.use(cors({
 app.use(express.json({ limit: '64mb' }));
 
 // ─── Middleware de autenticação Bearer ────────────────────────────────────────
-// Protege todas as rotas /api/* exceto /api/events (SSE — sem Bearer em EventSource)
+// Protege todas as rotas /api/* exceto /api/events (SSE - sem Bearer em EventSource)
 app.use('/api', (req, res, next) => {
-  // SSE não suporta headers customizados no browser — isenta apenas /api/events
+  // SSE não suporta headers customizados no browser - isenta apenas /api/events
   if (req.path === '/events') return next();
   if (!API_TOKEN) return next(); // sem token configurado = sem proteção (modo dev)
   const auth = req.headers['authorization'] || req.headers['x-api-token'] || '';
@@ -81,8 +81,8 @@ app.use('/api', (req, res, next) => {
 app.use('/api/stock', stockRouter);
 
 // ─── Helper: fetch com retry automático (503 / 429 / erros de rede) ───────────
-// 503 (sobrecarga): backoff rápido — 1.5s, 3s, 6s
-// 429 (rate-limit):  backoff longo  — 10s, 20s, 40s  (janela típica de 60s)
+// 503 (sobrecarga): backoff rápido - 1.5s, 3s, 6s
+// 429 (rate-limit):  backoff longo  - 10s, 20s, 40s  (janela típica de 60s)
 async function retryFetch(url, options, { maxRetries = 3 } = {}) {
   let lastErr;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
@@ -110,7 +110,7 @@ async function retryFetch(url, options, { maxRetries = 3 } = {}) {
   throw lastErr;
 }
 
-// ─── SSE — Server-Sent Events ─────────────────────────────────────────────────
+// ─── SSE - Server-Sent Events ─────────────────────────────────────────────────
 const sseClients = new Set();
 
 export function broadcast(event, data) {
@@ -140,7 +140,7 @@ app.post('/api/register', (req, res) => {
   const { channels = [], chatbots = [], groups = [], knowledgeBases = [] } = req.body;
 
   // Limpa e recarrega canais ativos do frontend
-  // (mantém apenas os que vieram neste registro — remove desativados)
+  // (mantém apenas os que vieram neste registro - remove desativados)
   const newChannels = {};
   for (const ch of channels) {
     if (ch.connectionType === 'qrcode' && ch.evolutionInstanceName && ch.status === 'active') {
@@ -186,7 +186,7 @@ app.post('/api/register', (req, res) => {
 // Verifica o secret configurado (header x-webhook-secret ou apikey).
 // Aceita se:
 //   1. WEBHOOK_SECRET não estiver definido (modo dev)
-//   2. x-webhook-secret == WEBHOOK_SECRET  (configuração ideal — headers no webhook)
+//   2. x-webhook-secret == WEBHOOK_SECRET  (configuração ideal - headers no webhook)
 //   3. apikey == chave da Evolution API de um canal conhecido (fallback enquanto
 //      a Evolution API ainda não enviou os headers configurados)
 function webhookAuth(req, res, next) {
@@ -203,13 +203,13 @@ function webhookAuth(req, res, next) {
   );
   if (incoming && knownKeys.has(incoming)) return next();
 
-  // 3. Origem local (127.0.0.1 / ::1) — Evolution API roda na mesma máquina
+  // 3. Origem local (127.0.0.1 / ::1) - Evolution API roda na mesma máquina
   //    e pode não enviar headers de auth dependendo da versão
   const ip = req.ip || '';
   const isLocal = ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1';
   if (isLocal) return next();
 
-  console.warn(`[security] Webhook rejeitado — origem externa sem secret (IP: ${ip})`);
+  console.warn(`[security] Webhook rejeitado - origem externa sem secret (IP: ${ip})`);
   return res.status(403).json({ error: 'Forbidden' });
 }
 app.post('/webhook', webhookAuth, handleWebhook);
@@ -482,7 +482,7 @@ app.post('/api/ride/extract-address', async (req, res) => {
 
     const system = `Você é um assistente especializado em extrair e completar endereços brasileiros de entregas na região do Alto Tietê, São Paulo.
 
-REGRA FUNDAMENTAL: Todas as entregas são realizadas exclusivamente na região do Alto Tietê — SP. As cidades que compõem essa região são:
+REGRA FUNDAMENTAL: Todas as entregas são realizadas exclusivamente na região do Alto Tietê - SP. As cidades que compõem essa região são:
 - Suzano, Mogi das Cruzes, Poá, Ferraz de Vasconcelos, Itaquaquecetuba, Arujá, Guararema, Salesópolis e Biritiba Mirim.
 
 Ao extrair um endereço da conversa, siga estas diretrizes:
@@ -571,7 +571,7 @@ Se não encontrar nenhum endereço na conversa, retorne: {"address":"","found":f
           }
         }
       } catch (nominatimErr) {
-        // Nominatim falhou — usa o endereço da IA mesmo
+        // Nominatim falhou - usa o endereço da IA mesmo
         console.warn('[ride/extract-address] Nominatim:', nominatimErr.message);
       }
     }
@@ -626,7 +626,7 @@ function getTabulationForChannel(channelId) {
   return cfgs.find(c => c.enabled && (!c.channelIds || c.channelIds.length === 0)) ?? null;
 }
 
-// ─── Configuração de tabulação (legado — compatibilidade) ─────────────────────
+// ─── Configuração de tabulação (legado - compatibilidade) ─────────────────────
 app.get('/api/tabulation', (req, res) => {
   // Retorna o primeiro config global para compatibilidade
   const cfgs = store.config?.tabulationConfigs ?? [];
@@ -684,7 +684,7 @@ app.post('/api/pod-sync-retry', async (req, res) => {
     } catch (err) {
       failed++;
       remaining.push({ ...p, failedAt: new Date().toISOString(), reason: err.message });
-      console.error(`[pod-integration] ❌ Re-sync falhou: conv ${p.convId} — ${err.message}`);
+      console.error(`[pod-integration] ❌ Re-sync falhou: conv ${p.convId} - ${err.message}`);
     }
   }
 
@@ -906,8 +906,8 @@ app.get('/api/tabulations', (req, res) => {
     .sort((a, b) => new Date(b.resolvedAt || b.updatedAt) - new Date(a.resolvedAt || a.updatedAt))
     .map(c => ({
       id:          c.id,
-      contactName: c.contact?.name ?? c.contact?.phone ?? '—',
-      contactPhone: c.contact?.phone ?? '—',
+      contactName: c.contact?.name ?? c.contact?.phone ?? ' - ',
+      contactPhone: c.contact?.phone ?? ' - ',
       resolvedAt:  c.resolvedAt || c.updatedAt,
       tabulation:  c.tabulation,
       channelId:   c.channelId,
@@ -1097,7 +1097,7 @@ app.post('/api/conversations/:id/read', (req, res) => {
 
 // ─── Config do servidor (tokens de integrações) ───────────────────────────────
 app.get('/api/config', (_req, res) => {
-  // Nunca expõe o token completo — apenas informa se está configurado
+  // Nunca expõe o token completo - apenas informa se está configurado
   res.json({
     mercadoPagoConfigured: !!store.config?.mercadoPagoToken,
   });
@@ -1114,7 +1114,7 @@ app.post('/api/config', (req, res) => {
   res.json({ ok: true });
 });
 
-// ─── PIX — Mercado Pago ───────────────────────────────────────────────────────
+// ─── PIX - Mercado Pago ───────────────────────────────────────────────────────
 
 // Gera QR Code PIX (retorna base64 + copia-e-cola para o operador visualizar)
 app.post('/api/pix/generate', async (req, res) => {
@@ -1143,7 +1143,7 @@ app.post('/api/pix/send', async (req, res) => {
     const amountFmt = parseFloat(amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
     // 1ª mensagem: imagem do QR Code com legenda do valor
-    await sendImageBase64(channel, to, qrCodeImage, `💸 *PIX — ${amountFmt}*`);
+    await sendImageBase64(channel, to, qrCodeImage, `💸 *PIX - ${amountFmt}*`);
 
     // Pequena pausa para garantir ordem de entrega
     await new Promise(r => setTimeout(r, 1000));
@@ -1157,7 +1157,7 @@ app.post('/api/pix/send', async (req, res) => {
     const msg1 = {
       id:             `pix_img_${Date.now()}`,
       conversationId: conv.id,
-      content:        `💸 PIX gerado — ${amountFmt}`,
+      content:        `💸 PIX gerado - ${amountFmt}`,
       type:           'image',
       direction:      'outgoing',
       status:         'sent',
@@ -1243,10 +1243,10 @@ app.get('/api/debug', async (_req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MÓDULO DE SEGURANÇA — Autenticação, 2FA, Recuperação de Senha, LGPD, Logs
+// MÓDULO DE SEGURANÇA - Autenticação, 2FA, Recuperação de Senha, LGPD, Logs
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// ─── POST /auth/login — Autenticação com bcrypt + JWT + 2FA ──────────────────
+// ─── POST /auth/login - Autenticação com bcrypt + JWT + 2FA ──────────────────
 app.post('/auth/login', async (req, res) => {
   const { username, password, totpToken } = req.body;
   if (!username || !password) {
@@ -1261,7 +1261,7 @@ app.post('/auth/login', async (req, res) => {
   }
 });
 
-// ─── POST /auth/logout — Invalida o JWT (blacklist) ──────────────────────────
+// ─── POST /auth/logout - Invalida o JWT (blacklist) ──────────────────────────
 app.post('/auth/logout', requireAuth, (req, res) => {
   const auth = req.headers['authorization'] || '';
   const token = auth.startsWith('Bearer ') ? auth.slice(7) : auth;
@@ -1269,12 +1269,12 @@ app.post('/auth/logout', requireAuth, (req, res) => {
   res.json({ ok: true, message: 'Sessão encerrada com sucesso.' });
 });
 
-// ─── GET /auth/me — Dados do usuário autenticado (valida sessão) ─────────────
+// ─── GET /auth/me - Dados do usuário autenticado (valida sessão) ─────────────
 app.get('/auth/me', requireAuth, (req, res) => {
   res.json({ username: req.user.username, role: req.user.role });
 });
 
-// ─── POST /auth/change-password — Altera senha (requer auth) ─────────────────
+// ─── POST /auth/change-password - Altera senha (requer auth) ─────────────────
 app.post('/auth/change-password', requireAuth, async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   if (!currentPassword || !newPassword) {
@@ -1291,7 +1291,7 @@ app.post('/auth/change-password', requireAuth, async (req, res) => {
   }
 });
 
-// ─── POST /auth/recovery/request — Solicita token de recuperação de senha ────
+// ─── POST /auth/recovery/request - Solicita token de recuperação de senha ────
 app.post('/auth/recovery/request', (req, res) => {
   const { username } = req.body;
   if (!username) return res.status(400).json({ error: 'username obrigatório' });
@@ -1305,7 +1305,7 @@ app.post('/auth/recovery/request', (req, res) => {
   }
 });
 
-// ─── POST /auth/recovery/reset — Redefine senha com token de recuperação ─────
+// ─── POST /auth/recovery/reset - Redefine senha com token de recuperação ─────
 app.post('/auth/recovery/reset', (req, res) => {
   const { token, newPassword } = req.body;
   if (!token || !newPassword) return res.status(400).json({ error: 'token e newPassword são obrigatórios' });
@@ -1318,7 +1318,7 @@ app.post('/auth/recovery/reset', (req, res) => {
   }
 });
 
-// ─── POST /auth/2fa/setup — Gera secret TOTP e URL para QR Code ──────────────
+// ─── POST /auth/2fa/setup - Gera secret TOTP e URL para QR Code ──────────────
 app.post('/auth/2fa/setup', requireAuth, (req, res) => {
   try {
     const { secret, otpAuthUrl } = generate2FASecret(req.user.username);
@@ -1328,7 +1328,7 @@ app.post('/auth/2fa/setup', requireAuth, (req, res) => {
   }
 });
 
-// ─── POST /auth/2fa/confirm — Confirma ativação do 2FA ───────────────────────
+// ─── POST /auth/2fa/confirm - Confirma ativação do 2FA ───────────────────────
 app.post('/auth/2fa/confirm', requireAuth, (req, res) => {
   const { token } = req.body;
   if (!token) return res.status(400).json({ error: 'token TOTP obrigatório' });
@@ -1341,13 +1341,13 @@ app.post('/auth/2fa/confirm', requireAuth, (req, res) => {
   }
 });
 
-// ─── GET /auth/users — Lista usuários (somente superadmin) ───────────────────
+// ─── GET /auth/users - Lista usuários (somente superadmin) ───────────────────
 app.get('/auth/users', requireAuth, (req, res) => {
   if (req.user.role !== 'superadmin') return res.status(403).json({ error: 'Acesso negado' });
   res.json(listUsers());
 });
 
-// ─── POST /auth/users — Cria operador (somente superadmin) ───────────────────
+// ─── POST /auth/users - Cria operador (somente superadmin) ───────────────────
 app.post('/auth/users', requireAuth, async (req, res) => {
   if (req.user.role !== 'superadmin') return res.status(403).json({ error: 'Acesso negado' });
   const { username, password, role } = req.body;
@@ -1361,10 +1361,10 @@ app.post('/auth/users', requireAuth, async (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// LGPD — Lei Geral de Proteção de Dados (Lei nº 13.709/2018)
+// LGPD - Lei Geral de Proteção de Dados (Lei nº 13.709/2018)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// ─── GET /lgpd/data — Consulta dados pessoais do titular ─────────────────────
+// ─── GET /lgpd/data - Consulta dados pessoais do titular ─────────────────────
 app.get('/lgpd/data', requireAuth, (req, res) => {
   try {
     const data = getLGPDData(req.user.username);
@@ -1375,7 +1375,7 @@ app.get('/lgpd/data', requireAuth, (req, res) => {
   }
 });
 
-// ─── GET /lgpd/export — Exporta dados pessoais em JSON ───────────────────────
+// ─── GET /lgpd/export - Exporta dados pessoais em JSON ───────────────────────
 app.get('/lgpd/export', requireAuth, (req, res) => {
   try {
     const data = exportLGPDData(req.user.username);
@@ -1387,7 +1387,7 @@ app.get('/lgpd/export', requireAuth, (req, res) => {
   }
 });
 
-// ─── DELETE /lgpd/data — Solicita exclusão de dados pessoais (Art. 18, VI) ───
+// ─── DELETE /lgpd/data - Solicita exclusão de dados pessoais (Art. 18, VI) ───
 app.delete('/lgpd/data', requireAuth, (req, res) => {
   const { targetUsername } = req.body;
   // Usuário pode excluir seus próprios dados; superadmin pode excluir de qualquer um
@@ -1400,7 +1400,7 @@ app.delete('/lgpd/data', requireAuth, (req, res) => {
   }
 });
 
-// ─── POST /lgpd/consent — Registra/atualiza consentimento (Art. 7, I) ─────────
+// ─── POST /lgpd/consent - Registra/atualiza consentimento (Art. 7, I) ─────────
 app.post('/lgpd/consent', requireAuth, (req, res) => {
   const { version, given } = req.body;
   if (!version) return res.status(400).json({ error: 'version é obrigatório' });
@@ -1413,10 +1413,10 @@ app.post('/lgpd/consent', requireAuth, (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// AUDITORIA — Logs de segurança e acessos
+// AUDITORIA - Logs de segurança e acessos
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// ─── GET /auth/audit-log — Leitura dos logs de auditoria (superadmin) ─────────
+// ─── GET /auth/audit-log - Leitura dos logs de auditoria (superadmin) ─────────
 app.get('/auth/audit-log', requireAuth, (req, res) => {
   if (req.user.role !== 'superadmin') return res.status(403).json({ error: 'Acesso negado' });
   const limit = Math.min(parseInt(req.query.limit) || 100, 1000);

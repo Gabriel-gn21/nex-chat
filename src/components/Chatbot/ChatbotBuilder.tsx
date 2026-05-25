@@ -22,7 +22,7 @@ import {
 import clsx from 'clsx';
 
 // ═══════════════════════════════════════════════════════════════
-// CUSTOM EDGE — com botão de exclusão ao clicar
+// CUSTOM EDGE - com botão de exclusão ao clicar
 // ═══════════════════════════════════════════════════════════════
 function DeletableEdge({
   id, sourceX, sourceY, targetX, targetY,
@@ -257,7 +257,7 @@ function FlowNodeComponent({ data, type: rawType, selected }: {
       selected && 'ring-2 ring-offset-1 ring-primary-500 shadow-lg',
     )}>
 
-      {/* ── TARGET handle — LEFT side (all nodes except start) ── */}
+      {/* ── TARGET handle - LEFT side (all nodes except start) ── */}
       {!isStart && (
         <Handle
           type="target"
@@ -379,7 +379,7 @@ function FlowNodeComponent({ data, type: rawType, selected }: {
           </p>
         )}
 
-        {/* Binary labels — aligned to right-side handle positions */}
+        {/* Binary labels - aligned to right-side handle positions */}
         {layout === 'binary' && BINARY_LABELS[type] && (
           <div className="mt-1 pt-1 border-t border-current/10 space-y-0.5">
             <div className="flex items-center justify-end gap-0.5 text-[9px] font-bold text-emerald-600">
@@ -391,7 +391,7 @@ function FlowNodeComponent({ data, type: rawType, selected }: {
           </div>
         )}
 
-        {/* Decision labels — one per named condition */}
+        {/* Decision labels - one per named condition */}
         {layout === 'decision' && conditions.length > 0 && (
           <div className="mt-1 pt-1 border-t border-current/10 space-y-0.5">
             {conditions.map((c, i) => (
@@ -411,7 +411,7 @@ function FlowNodeComponent({ data, type: rawType, selected }: {
         )}
       </div>
 
-      {/* ── SOURCE handles — RIGHT side ── */}
+      {/* ── SOURCE handles - RIGHT side ── */}
 
       {/* default / start: single centered */}
       {(layout === 'default' || layout === 'start') && (
@@ -468,7 +468,7 @@ function FlowNodeComponent({ data, type: rawType, selected }: {
               className="!w-3 !h-3 !bg-white !border-2 !border-slate-400" />
       )}
 
-      {/* terminal: target only (no source) — handled by the left handle above */}
+      {/* terminal: target only (no source) - handled by the left handle above */}
     </div>
   );
 }
@@ -855,7 +855,7 @@ function NodeConfigPanel({ node, availableVars, groups, knowledgeBases, channels
         {/* ── Type-specific config ── */}
         {/* ENVIOS ─────────────────────────────────────────── */}
         {type === 'send_text' && (
-          <Fld label="Mensagem — use {variavel} para inserir valores">
+          <Fld label="Mensagem - use {variavel} para inserir valores">
             <VarTextarea value={d.message ?? ''} onChange={(v) => onUpdate({ message: v })}
               rows={4} availableVars={availableVars} placeholder="Olá {nome}, como posso ajudar?" />
           </Fld>
@@ -863,11 +863,11 @@ function NodeConfigPanel({ node, availableVars, groups, knowledgeBases, channels
 
         {type === 'send_buttons' && (
           <>
-            <Fld label="Mensagem — use {variavel} para inserir valores">
+            <Fld label="Mensagem - use {variavel} para inserir valores">
               <VarTextarea value={d.message ?? ''} onChange={(v) => onUpdate({ message: v })}
                 rows={3} availableVars={availableVars} />
             </Fld>
-            <Fld label="Botões (até 3 — cada um cria um caminho de saída)">
+            <Fld label="Botões (até 3 - cada um cria um caminho de saída)">
               <div className="space-y-1.5">
                 {(d.buttons ?? [{ label: '' }]).map((btn, i) => (
                   <div key={i} className="flex gap-1.5">
@@ -901,7 +901,7 @@ function NodeConfigPanel({ node, availableVars, groups, knowledgeBases, channels
 
         {type === 'send_menu' && (
           <>
-            <Fld label="Mensagem do menu — use {variavel} para inserir valores">
+            <Fld label="Mensagem do menu - use {variavel} para inserir valores">
               <VarTextarea value={d.message ?? ''} onChange={(v) => onUpdate({ message: v })}
                 rows={3} availableVars={availableVars} placeholder="Escolha uma opção:" />
             </Fld>
@@ -988,7 +988,7 @@ function NodeConfigPanel({ node, availableVars, groups, knowledgeBases, channels
 
         {type === 'send_list_buttons' && (
           <>
-            <Fld label="Mensagem do menu — use {variavel} para inserir valores">
+            <Fld label="Mensagem do menu - use {variavel} para inserir valores">
               <VarTextarea value={d.message ?? ''} onChange={(v) => onUpdate({ message: v })}
                 rows={3} availableVars={availableVars} placeholder="Escolha uma opção:" />
             </Fld>
@@ -1038,7 +1038,7 @@ function NodeConfigPanel({ node, availableVars, groups, knowledgeBases, channels
           </>
         )}
 
-        {/* Delay — compartilhado entre todos os nós de envio */}
+        {/* Delay - compartilhado entre todos os nós de envio */}
         {type.startsWith('send_') && (
           <div className="mt-4 pt-4 border-t border-slate-100">
             <Fld label="Delay antes de enviar (segundos)">
@@ -1068,7 +1068,7 @@ function NodeConfigPanel({ node, availableVars, groups, knowledgeBases, channels
         {/* ENTRADAS ───────────────────────────────────────── */}
         {type.startsWith('input_') && (
           <>
-            <Fld label="Mensagem de solicitação — use {variavel} para personalizar">
+            <Fld label="Mensagem de solicitação - use {variavel} para personalizar">
               <VarTextarea value={d.message ?? ''} onChange={(v) => onUpdate({ message: v })}
                 rows={3} availableVars={availableVars} placeholder="Por favor, informe seu..." />
             </Fld>
@@ -1112,7 +1112,7 @@ function NodeConfigPanel({ node, availableVars, groups, knowledgeBases, channels
               <input value={d.emailSubject ?? ''} onChange={(e) => onUpdate({ emailSubject: e.target.value })}
                 className="input" />
             </Fld>
-            <Fld label="Corpo do e-mail — use {variavel} para personalizar">
+            <Fld label="Corpo do e-mail - use {variavel} para personalizar">
               <VarTextarea value={d.emailBody ?? ''} onChange={(v) => onUpdate({ emailBody: v })}
                 rows={4} availableVars={availableVars} />
             </Fld>
@@ -1162,7 +1162,7 @@ function NodeConfigPanel({ node, availableVars, groups, knowledgeBases, channels
                   <div key={i} className="rounded-xl border border-amber-200 bg-amber-50/60 p-3 space-y-2">
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider">
-                        Caminho {i + 1} — handle <code className="bg-amber-100 px-1 rounded">cond-{i}</code>
+                        Caminho {i + 1} - handle <code className="bg-amber-100 px-1 rounded">cond-{i}</code>
                       </span>
                       <button type="button" onClick={() => delCond(i)}
                         className="w-6 h-6 rounded-md text-red-400 hover:bg-red-100 flex items-center justify-center transition shrink-0">
@@ -1177,7 +1177,7 @@ function NodeConfigPanel({ node, availableVars, groups, knowledgeBases, channels
                         placeholder={`ex: Cliente VIP, Opção 1, Não respondeu…`}
                       />
                     </Fld>
-                    <Fld label="Condição — digite { para variáveis">
+                    <Fld label="Condição - digite { para variáveis">
                       <VarInput
                         value={c.condition}
                         onChange={(v) => updCond(i, { condition: v })}
@@ -1292,7 +1292,7 @@ function NodeConfigPanel({ node, availableVars, groups, knowledgeBases, channels
                 onChange={(e) => onUpdate({ handoffGroupId: e.target.value || undefined })}
                 className="input"
               >
-                <option value="">— Sem grupo (fila geral) —</option>
+                <option value=""> -  Sem grupo (fila geral)  - </option>
                 {groups.map(g => (
                   <option key={g.id} value={g.id}>{g.name}</option>
                 ))}
@@ -1308,13 +1308,13 @@ function NodeConfigPanel({ node, availableVars, groups, knowledgeBases, channels
           </>
         )}
         {type === 'end_finish' && (
-          <Fld label="Mensagem de encerramento — use {variavel} para personalizar">
+          <Fld label="Mensagem de encerramento - use {variavel} para personalizar">
             <VarTextarea value={d.message ?? ''} onChange={(v) => onUpdate({ message: v })}
               rows={3} availableVars={availableVars} placeholder="Obrigado pelo contato, {nome}! Até mais." />
           </Fld>
         )}
 
-        {/* ── Etiqueta de caminho (opcional — blocos de envio) ── */}
+        {/* ── Etiqueta de caminho (opcional - blocos de envio) ── */}
         {type.startsWith('send_') && (
           <div className="mt-4 pt-3 border-t border-slate-100">
             <Fld label="Etiqueta de caminho (opcional)">
@@ -1351,7 +1351,7 @@ function WebhookPanel({ d, onUpdate, availableVars }: { d: FlowNodeData; onUpdat
           </Fld>
         </div>
       </div>
-      <Fld label="Body (JSON) — use {variavel} para dados dinâmicos">
+      <Fld label="Body (JSON) - use {variavel} para dados dinâmicos">
         <VarTextarea value={d.webhookBody ?? ''} onChange={(v) => onUpdate({ webhookBody: v })}
           rows={4} availableVars={availableVars} placeholder={'{\n  "telefone": "{telefone}",\n  "nome": "{nome}"\n}'} />
       </Fld>
@@ -1381,7 +1381,7 @@ function ForwardPanel({ d, onUpdate, availableVars, channels }: {
           onChange={(e) => onUpdate({ forwardChannelId: e.target.value || undefined })}
           className="input"
         >
-          <option value="">— Mesmo canal da conversa atual —</option>
+          <option value=""> -  Mesmo canal da conversa atual  - </option>
           {activeChannels.map(c => (
             <option key={c.id} value={c.id}>{c.name}</option>
           ))}
@@ -1392,7 +1392,7 @@ function ForwardPanel({ d, onUpdate, availableVars, channels }: {
       </Fld>
 
       {/* Número de destino */}
-      <Fld label="Número de destino (com DDI) — use {variavel} se necessário">
+      <Fld label="Número de destino (com DDI) - use {variavel} se necessário">
         <VarTextarea
           value={d.forwardTo ?? ''}
           onChange={(v) => onUpdate({ forwardTo: v })}
@@ -1404,7 +1404,7 @@ function ForwardPanel({ d, onUpdate, availableVars, channels }: {
       </Fld>
 
       {/* Prefixo opcional */}
-      <Fld label="Prefixo da mensagem (opcional) — use {variavel} para personalizar">
+      <Fld label="Prefixo da mensagem (opcional) - use {variavel} para personalizar">
         <VarTextarea
           value={d.forwardPrefix ?? ''}
           onChange={(v) => onUpdate({ forwardPrefix: v })}
@@ -1434,7 +1434,7 @@ function ForwardPanel({ d, onUpdate, availableVars, channels }: {
             onChange={(e) => onUpdate({ forwardVariable: e.target.value })}
             className="input font-mono"
           >
-            <option value="">— Selecione uma variável —</option>
+            <option value=""> -  Selecione uma variável  - </option>
             {availableVars.map(v => <option key={v} value={v}>{v}</option>)}
           </select>
           {availableVars.length === 0 && (
@@ -1444,7 +1444,7 @@ function ForwardPanel({ d, onUpdate, availableVars, channels }: {
       )}
 
       {mode === 'custom' && (
-        <Fld label="Texto a encaminhar — use {variavel} para valores dinâmicos">
+        <Fld label="Texto a encaminhar - use {variavel} para valores dinâmicos">
           <VarTextarea
             value={d.forwardCustomText ?? ''}
             onChange={(v) => onUpdate({ forwardCustomText: v })}
@@ -1498,7 +1498,7 @@ function ApiPanel({ d, onUpdate, availableVars }: { d: FlowNodeData; onUpdate: (
         ))}
       </div>
       {['POST','PUT','PATCH'].includes(api.method) && (
-        <Fld label="Body (JSON) — use {variavel} para valores dinâmicos">
+        <Fld label="Body (JSON) - use {variavel} para valores dinâmicos">
           <VarTextarea value={api.body} onChange={(v) => set({ body: v })} rows={3}
             availableVars={availableVars} placeholder={'{ "campo": "{variavel}" }'} />
         </Fld>
@@ -1647,7 +1647,7 @@ function AiConfigModal({ node, availableVars, knowledgeBases, onUpdate, onDelete
                 )}
                 {selectedKBs.length > 0 && (
                   <p className="text-[10px] text-primary-600 mt-1.5">
-                    {selectedKBs.length} base{selectedKBs.length > 1 ? 's' : ''} vinculada{selectedKBs.length > 1 ? 's' : ''} — a IA consultará antes de responder.
+                    {selectedKBs.length} base{selectedKBs.length > 1 ? 's' : ''} vinculada{selectedKBs.length > 1 ? 's' : ''} - a IA consultará antes de responder.
                   </p>
                 )}
               </div>
@@ -1661,27 +1661,27 @@ function AiConfigModal({ node, availableVars, knowledgeBases, onUpdate, onDelete
                       onChange={(e) => onUpdate({ aiMemoryTurns: Number(e.target.value) })}
                       className="flex-1 accent-primary-600" />
                     <span className="text-sm font-semibold text-slate-700 w-8 text-center">
-                      {Number(memoryTurns) === 0 ? '—' : Number(memoryTurns)}
+                      {Number(memoryTurns) === 0 ? ' - ' : Number(memoryTurns)}
                     </span>
                   </div>
                 </Fld>
                 <p className="text-[10px] text-slate-400 mt-1">
                   {Number(memoryTurns) === 0
-                    ? 'Sem memória — cada mensagem é independente.'
+                    ? 'Sem memória - cada mensagem é independente.'
                     : `A IA lembra dos últimos ${memoryTurns} pares de pergunta/resposta da conversa.`}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* System Prompt — campo grande */}
+          {/* System Prompt - campo grande */}
           <Fld label="System prompt">
             <VarTextarea value={d.aiSystemPrompt ?? ''} onChange={(v) => onUpdate({ aiSystemPrompt: v })}
               rows={10} availableVars={availableVars} placeholder="Você é um assistente útil..." />
           </Fld>
 
           {/* Mensagem do usuário */}
-          <Fld label="Mensagem do usuário — use {variavel} para contexto">
+          <Fld label="Mensagem do usuário - use {variavel} para contexto">
             <VarTextarea value={d.aiUserMessage ?? ''} onChange={(v) => onUpdate({ aiUserMessage: v })}
               rows={4} availableVars={availableVars} placeholder="{resposta_usuario}" />
           </Fld>
@@ -1781,7 +1781,7 @@ function AiPanel({ d, onUpdate, availableVars, knowledgeBases }: {
       </Fld>
 
       {/* Mensagem do usuário */}
-      <Fld label="Mensagem do usuário — use {variavel} para contexto">
+      <Fld label="Mensagem do usuário - use {variavel} para contexto">
         <VarTextarea value={d.aiUserMessage ?? ''} onChange={(v) => onUpdate({ aiUserMessage: v })}
           rows={2} availableVars={availableVars} placeholder="{resposta_usuario}" />
       </Fld>
@@ -1815,7 +1815,7 @@ function AiPanel({ d, onUpdate, availableVars, knowledgeBases }: {
         )}
         {selectedKBs.length > 0 && (
           <p className="text-[10px] text-primary-600 mt-1.5">
-            {selectedKBs.length} base{selectedKBs.length > 1 ? 's' : ''} vinculada{selectedKBs.length > 1 ? 's' : ''} — a IA consultará antes de responder.
+            {selectedKBs.length} base{selectedKBs.length > 1 ? 's' : ''} vinculada{selectedKBs.length > 1 ? 's' : ''} - a IA consultará antes de responder.
           </p>
         )}
       </div>
@@ -1832,13 +1832,13 @@ function AiPanel({ d, onUpdate, availableVars, knowledgeBases }: {
               className="flex-1 accent-primary-600"
             />
             <span className="text-sm font-semibold text-slate-700 w-8 text-center">
-              {Number(memoryTurns) === 0 ? '—' : Number(memoryTurns)}
+              {Number(memoryTurns) === 0 ? ' - ' : Number(memoryTurns)}
             </span>
           </div>
         </Fld>
         <p className="text-[10px] text-slate-400 mt-1">
           {Number(memoryTurns) === 0
-            ? 'Sem memória — cada mensagem é independente.'
+            ? 'Sem memória - cada mensagem é independente.'
             : `A IA lembra dos últimos ${memoryTurns} pares de pergunta/resposta da conversa.`}
         </p>
       </div>
@@ -1952,7 +1952,7 @@ function AiPanel({ d, onUpdate, availableVars, knowledgeBases }: {
 
         <p className="text-[10px] text-slate-400 mt-2 leading-relaxed">
           No prompt, instrua: <em>"Quando for mostrar o catálogo, inclua <code>[IMAGEM:catalogo]</code> na resposta."</em>
-          O marcador não é exibido ao cliente — apenas a imagem é enviada.
+          O marcador não é exibido ao cliente - apenas a imagem é enviada.
         </p>
       </div>
 

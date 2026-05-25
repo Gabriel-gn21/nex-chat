@@ -128,7 +128,7 @@ export default function ConversationList({ onSelect }: { onSelect?: () => void }
           )}
         </div>
 
-        {/* Filtro de grupo — expansível */}
+        {/* Filtro de grupo - expansível */}
         {showFilters && canFilterGroups && groups.length > 0 && (
           <div className="relative mt-2">
             <UsersRound size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
@@ -538,7 +538,7 @@ function NewConversationModal({
             </div>
           </div>
 
-          {/* Número de telefone — aparece quando não selecionou contato */}
+          {/* Número de telefone - aparece quando não selecionou contato */}
           {!selectedContact && (
             <div className="grid grid-cols-2 gap-3">
               <div>
@@ -566,7 +566,7 @@ function NewConversationModal({
             </div>
           )}
 
-          {/* Contato selecionado — chip */}
+          {/* Contato selecionado - chip */}
           {selectedContact && (
             <div className="flex items-center gap-2 px-3 py-2 bg-primary-50 border border-primary-200 rounded-xl">
               <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-300 to-accent-300 flex items-center justify-center shrink-0">

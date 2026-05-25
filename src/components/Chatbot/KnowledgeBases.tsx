@@ -14,8 +14,8 @@ const MARKDOWN_GUIDE = `# Guia para documentar sua Base de Conhecimento
 Use **cabeçalhos** para organizar os tópicos principais:
 
 # Título principal da base
-## Seção 1 — Produtos e Serviços
-### Subseção 1.1 — Detalhes
+## Seção 1 - Produtos e Serviços
+### Subseção 1.1 - Detalhes
 
 ---
 

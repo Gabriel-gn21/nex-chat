@@ -1,18 +1,18 @@
 /**
- * engine.mjs — Motor de execução de fluxos de chatbot
+ * engine.mjs - Motor de execução de fluxos de chatbot
  *
  * Sessão:
- *   convId       — id da conversa
- *   channelId    — id do canal
- *   instanceName — nome da instância Evolution
- *   phone        — número do contato (dígitos)
- *   jid          — JID canônico (@s.whatsapp.net ou @lid)
- *   nodeId       — nó atual
- *   vars         — variáveis coletadas
- *   waitingFor   — 'input' | 'choice' | 'media' | 'location' | 'suspend' | null
- *   retryCount   — tentativas de validação no nó atual
- *   choices      — mapa para botões/menu
- *   ended        — fluxo encerrado
+ *   convId       - id da conversa
+ *   channelId    - id do canal
+ *   instanceName - nome da instância Evolution
+ *   phone        - número do contato (dígitos)
+ *   jid          - JID canônico (@s.whatsapp.net ou @lid)
+ *   nodeId       - nó atual
+ *   vars         - variáveis coletadas
+ *   waitingFor   - 'input' | 'choice' | 'media' | 'location' | 'suspend' | null
+ *   retryCount   - tentativas de validação no nó atual
+ *   choices      - mapa para botões/menu
+ *   ended        - fluxo encerrado
  */
 
 import { store, save } from './store.mjs';
@@ -118,12 +118,12 @@ function makeOutgoingMsg(convId, content, type = 'text') {
 // Converte links de compartilhamento (Google Drive, Dropbox, etc.) para URLs
 // que retornam o binário da imagem diretamente, sem página HTML intermediária.
 function normalizeImageUrl(url) {
-  // Google Drive — /file/d/FILE_ID/view → uc?export=download&id=FILE_ID
+  // Google Drive - /file/d/FILE_ID/view → uc?export=download&id=FILE_ID
   const gdrive = url.match(/drive\.google\.com\/file\/d\/([^/?\s]+)/);
   if (gdrive) {
     return `https://drive.google.com/uc?export=download&id=${gdrive[1]}`;
   }
-  // Dropbox — ?dl=0 → ?dl=1  (força download direto)
+  // Dropbox - ?dl=0 → ?dl=1  (força download direto)
   if (url.includes('dropbox.com') && url.includes('dl=0')) {
     return url.replace('dl=0', 'dl=1');
   }
@@ -151,9 +151,9 @@ async function fetchImageAsBase64(rawUrl) {
   const contentType = res.headers.get('content-type') || '';
   const mime        = contentType.split(';')[0].trim();
 
-  // Rejeita HTML — indica que a URL retornou uma página web, não a imagem
+  // Rejeita HTML - indica que a URL retornou uma página web, não a imagem
   if (mime === 'text/html' || mime === 'text/plain') {
-    throw new Error(`URL retornou ${mime} em vez de imagem — verifique o link (use link direto, não de visualização)`);
+    throw new Error(`URL retornou ${mime} em vez de imagem - verifique o link (use link direto, não de visualização)`);
   }
 
   const arrayBuf = await res.arrayBuffer();
@@ -185,7 +185,7 @@ export async function runFlow(session, bot, userInput = null) {
 
   if (entry.running) {
     // Enfileira para processar assim que o flow atual terminar
-    console.log(`[engine] Flow em execução para ${lockKey} — input enfileirado: "${userInput?.slice(0,40)}"`);
+    console.log(`[engine] Flow em execução para ${lockKey} - input enfileirado: "${userInput?.slice(0,40)}"`);
     entry.queue.push({ session, bot, userInput });
     return;
   }
@@ -266,7 +266,7 @@ export async function runFlow(session, bot, userInput = null) {
         session.retryCount = (session.retryCount || 0) + 1;
 
         if (session.retryCount >= maxRetries) {
-          // Esgotou tentativas — avança pelo caminho de erro (handle 'error') ou encerra
+          // Esgotou tentativas - avança pelo caminho de erro (handle 'error') ou encerra
           console.log(`[engine] Máx. tentativas atingido (${maxRetries}). Avançando pelo caminho de erro.`);
           session.waitingFor = null;
           session.retryCount = 0;
@@ -315,7 +315,7 @@ export async function runFlow(session, bot, userInput = null) {
       return;
     }
 
-    // ── suspend — qualquer mensagem retoma o fluxo ─────────────────────────
+    // ── suspend - qualquer mensagem retoma o fluxo ─────────────────────────
     if (session.waitingFor === 'suspend') {
       session.waitingFor = null;
       const next = nextNode(current.id);
@@ -346,7 +346,7 @@ export async function runFlow(session, bot, userInput = null) {
       // Pequeno delay para evitar stack overflow em rajadas longas
       setImmediate(() => runFlow(next.session, next.bot, next.userInput));
     } else {
-      // Fila vazia — remove a entrada para não vazar memória
+      // Fila vazia - remove a entrada para não vazar memória
       flowQueues.delete(lockKey);
     }
   }
@@ -472,7 +472,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
         try { await sendText(channel, to, content); }
         catch (err) { console.error(`[engine] ERRO send_action_buttons: ${err.message}`); }
       }
-      // Avança imediatamente — sem waitingFor
+      // Avança imediatamente - sem waitingFor
       const next = nextNode(node.id);
       if (next) { session.nodeId = next.id; await executeNode(next, session, channel, nodesById, nextNode, bot); }
       else session.ended = true;
@@ -480,7 +480,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
     }
 
     case 'send_list_buttons': {
-      // Lista com descrições — funciona como send_menu (aguarda escolha)
+      // Lista com descrições - funciona como send_menu (aguarda escolha)
       await applyDelay(d);
       const title = interpolate(d.message || '', vars);
       const items = (d.menuItems || []).map((it, i) => ({
@@ -531,12 +531,12 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
         const isValid  = !validate || validate(pending, d);
         if (isValid) {
           if (d.variable) session.vars[d.variable] = pending.trim();
-          console.log(`[engine] input "${node.type}" consumiu pendingInput → var="${d.variable ?? '—'}"="${pending.substring(0,60)}"`);
+          console.log(`[engine] input "${node.type}" consumiu pendingInput → var="${d.variable ?? ' - '}"="${pending.substring(0,60)}"`);
           const next = nextNode(node.id);
           if (next) { session.nodeId = next.id; await executeNode(next, session, channel, nodesById, nextNode, bot); }
           else session.ended = true;
         } else {
-          // Valor inválido — trata como se o campo ficasse em espera normalmente
+          // Valor inválido - trata como se o campo ficasse em espera normalmente
           if (d.message) {
             const prompt = interpolate(d.message, vars);
             const msg    = makeOutgoingMsg(session.convId, prompt);
@@ -559,7 +559,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
       session.nodeId     = node.id;
       session.waitingFor = 'input';
       session.retryCount = 0;
-      console.log(`[engine] Aguardando input "${node.type}" → var="${d.variable ?? '—'}"`);
+      console.log(`[engine] Aguardando input "${node.type}" → var="${d.variable ?? ' - '}"`);
       break;
     }
 
@@ -577,7 +577,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
       }
       session.nodeId     = node.id;
       session.waitingFor = 'media';
-      console.log(`[engine] Aguardando mídia "${node.type}" → var="${d.variable ?? '—'}"`);
+      console.log(`[engine] Aguardando mídia "${node.type}" → var="${d.variable ?? ' - '}"`);
       break;
     }
 
@@ -591,7 +591,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
       }
       session.nodeId     = node.id;
       session.waitingFor = 'location';
-      console.log(`[engine] Aguardando localização → var="${d.variable ?? '—'}"`);
+      console.log(`[engine] Aguardando localização → var="${d.variable ?? ' - '}"`);
       break;
     }
 
@@ -732,7 +732,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
           let textInput = userInput;
           if (audioMatch) {
             const [, mimeType, b64Data] = audioMatch;
-            console.log(`[engine] OpenAI: áudio detectado (${mimeType}) — transcrevendo com Whisper…`);
+            console.log(`[engine] OpenAI: áudio detectado (${mimeType}) - transcrevendo com Whisper…`);
             const transcription = await transcribeWithWhisper(d.aiApiKey, mimeType, b64Data);
             textInput = transcription ?? '[áudio não transcrito]';
           }
@@ -751,14 +751,14 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
           aiReply = json.choices?.[0]?.message?.content ?? null;
 
         } else if (prov === 'anthropic') {
-          // Anthropic não tem Whisper próprio — usa a chave Whisper configurada
+          // Anthropic não tem Whisper próprio - usa a chave Whisper configurada
           // (d.whisperApiKey) se disponível, caso contrário marca como não transcrito.
           let textInput = userInput;
           if (audioMatch) {
             const [, mimeType, b64Data] = audioMatch;
             const whisperKey = d.whisperApiKey || null;
             if (whisperKey) {
-              console.log(`[engine] Anthropic: áudio detectado — transcrevendo com Whisper…`);
+              console.log(`[engine] Anthropic: áudio detectado - transcrevendo com Whisper…`);
               const transcription = await transcribeWithWhisper(whisperKey, mimeType, b64Data);
               textInput = transcription ?? '[áudio não transcrito]';
             } else {
@@ -830,7 +830,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
               const rawAddr     = olaField || streetFree || '';
 
               if (rawAddr) {
-                // 2. Verifica se já tem bairro/cidade — se tiver, não precisa buscar
+                // 2. Verifica se já tem bairro/cidade - se tiver, não precisa buscar
                 const jaCompleto = /\b(bairro|jd\.?|jardim|vila\b|vl\.?|centro\b|parque\b|district|suburb)\b/i.test(rawAddr)
                                 && /\b(sp|rj|mg|pr|rs|ba|ce|go|pe|sc|es|am|df|suzano|mogi|guarulhos|campinas|s[ãa]o paulo|osasco)\b/i.test(rawAddr);
 
@@ -868,7 +868,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
                           `• Endereço completo encontrado: ${display}`,
                           '',
                           'INSTRUÇÃO OBRIGATÓRIA: Apresente esse endereço completo ao cliente e pergunte se está correto.',
-                          'NÃO peça bairro ou cidade ao cliente — você já tem essa informação.',
+                          'NÃO peça bairro ou cidade ao cliente - você já tem essa informação.',
                           'Aguarde a confirmação antes de prosseguir com o pedido.',
                         ].join('\n');
                       } else {
@@ -915,7 +915,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
           if (json.error) {
             console.error(`[engine] Gemini erro: ${json.error.message}`);
           } else {
-            // Extrai texto — pode vir de parts com texto ou de parts com thought (thinking models)
+            // Extrai texto - pode vir de parts com texto ou de parts com thought (thinking models)
             const parts = json.candidates?.[0]?.content?.parts ?? [];
             aiReply = parts.find(p => p.text && !p.thought)?.text
                    ?? parts.find(p => p.text)?.text
@@ -974,15 +974,15 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
             console.log(`[engine] [PAGAMENTO] Tipo extraído: ${vars.mp_tipo_pagamento}`);
           }
 
-          // ── Marcador [FOTO_PRODUTO:URL] — foto lida da base de conhecimento ──
+          // ── Marcador [FOTO_PRODUTO:URL] - foto lida da base de conhecimento ──
           // A IA extrai a URL da foto do produto diretamente do texto da KB e a
           // inclui aqui. O engine envia a imagem com legenda de confirmação.
           const fotoProdutoRe = /\[FOTO_PRODUTO:(https?:\/\/[^\]\s]+)\]/gi;
           const fotoMatches   = [...aiReply.matchAll(fotoProdutoRe)];
 
-          // ── Marcador [IMAGEM:nome] — biblioteca de imagens do nó ──
+          // ── Marcador [IMAGEM:nome] - biblioteca de imagens do nó ──
           // Usado para imagens genéricas (catálogos, banners, etc.) cadastradas
-          // diretamente no nó AI — não vêm da base de conhecimento.
+          // diretamente no nó AI - não vêm da base de conhecimento.
           const imageLib    = Array.isArray(d.imageLibrary) ? d.imageLibrary : [];
           const imgMarkerRe = /\[IMAGEM:([^\]]+)\]/gi;
           const imgMatches  = [...aiReply.matchAll(imgMarkerRe)];
@@ -1024,7 +1024,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
             }
           }
 
-          // Envia imagens da biblioteca do nó (uso geral — catálogos, banners etc.)
+          // Envia imagens da biblioteca do nó (uso geral - catálogos, banners etc.)
           for (const match of imgMatches) {
             const imgName  = match[1].trim().toLowerCase().replace(/\s+/g, '_');
             const imgEntry = imageLib.find(img =>
@@ -1043,12 +1043,12 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
                 addMessage(session.convId, errMsg);
               }
             } else {
-              console.warn(`[engine] [IMAGEM:${imgName}] — não encontrada na biblioteca (${imageLib.length} cadastradas)`);
+              console.warn(`[engine] [IMAGEM:${imgName}] - não encontrada na biblioteca (${imageLib.length} cadastradas)`);
             }
           }
         }
       } else if (!d.aiSilent && d.aiFallbackMessage) {
-        // IA falhou mas há mensagem de fallback configurada — envia ao usuário
+        // IA falhou mas há mensagem de fallback configurada - envia ao usuário
         const fallback = interpolate(d.aiFallbackMessage, vars);
         const msg = makeOutgoingMsg(session.convId, fallback);
         addMessage(session.convId, msg);
@@ -1215,7 +1215,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
     }
 
     case 'integration_email': {
-      // Integração de e-mail — requer serviço SMTP configurado no servidor
+      // Integração de e-mail - requer serviço SMTP configurado no servidor
       console.log(`[engine] integration_email: para="${d.emailTo}" assunto="${d.emailSubject}"`);
       // TODO: integrar com nodemailer ou serviço SMTP configurado
       const next = nextNode(node.id);
@@ -1291,7 +1291,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
     }
 
     case 'logic_suspend': {
-      // Pausa o fluxo — retomado pela próxima mensagem do usuário
+      // Pausa o fluxo - retomado pela próxima mensagem do usuário
       if (d.message) {
         const text = interpolate(d.message, vars);
         const msg  = makeOutgoingMsg(session.convId, text);
@@ -1329,14 +1329,14 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
       const seq      = String(Date.now()).slice(-6);
       const protocol = `${prefix}${date}${seq}`;
       if (d.variable) session.vars[d.variable] = protocol;
-      console.log(`[engine] logic_protocol: protocolo gerado "${protocol}" → var="${d.variable ?? '—'}"`);
+      console.log(`[engine] logic_protocol: protocolo gerado "${protocol}" → var="${d.variable ?? ' - '}"`);
       const next = nextNode(node.id);
       if (next) { session.nodeId = next.id; await executeNode(next, session, channel, nodesById, nextNode, bot); }
       break;
     }
 
     case 'logic_list_lookup': {
-      // Busca em lista — futura integração com CRM/HubSpot
+      // Busca em lista - futura integração com CRM/HubSpot
       // Por ora, marca como não encontrado para o fluxo continuar
       console.log(`[engine] logic_list_lookup: lista="${d.listName}" valor="${d.listSearchValue}"`);
       const handle = 'false'; // 'true' quando integração CRM for implementada
@@ -1435,7 +1435,7 @@ async function executeNode(node, session, channel, nodesById, nextNode, bot) {
     }
 
     default: {
-      console.log(`[engine] Nó tipo "${node.type}" não implementado — avançando.`);
+      console.log(`[engine] Nó tipo "${node.type}" não implementado - avançando.`);
       const next = nextNode(node.id);
       if (next) { session.nodeId = next.id; await executeNode(next, session, channel, nodesById, nextNode, bot); }
       break;

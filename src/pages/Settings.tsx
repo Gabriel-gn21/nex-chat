@@ -212,7 +212,7 @@ function UserModal({ editing, form, setForm, onSubmit, onClose, currentRole }: {
           {!editing && (
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
               <p className="text-xs text-blue-700">
-                Senha inicial: <code className="font-mono font-bold">12345678</code> — o usuário deverá alterá-la no primeiro acesso.
+                Senha inicial: <code className="font-mono font-bold">12345678</code> - o usuário deverá alterá-la no primeiro acesso.
               </p>
             </div>
           )}
@@ -688,7 +688,7 @@ function IntegrationsTab() {
           <div className="w-11 h-11 rounded-xl bg-sky-100 flex items-center justify-center shrink-0 text-xl">💳</div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold text-slate-800">Mercado Pago — PIX</h3>
+              <h3 className="font-semibold text-slate-800">Mercado Pago - PIX</h3>
               {isConfigured ? (
                 <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">Configurado ✓</span>
               ) : (
@@ -1028,7 +1028,7 @@ function TabulationConfigEditor({
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-slate-800">{ch.name}</p>
-                  <p className="text-xs text-slate-500">{ch.phoneNumber || ch.evolutionInstanceName || '—'}</p>
+                  <p className="text-xs text-slate-500">{ch.phoneNumber || ch.evolutionInstanceName || ' - '}</p>
                 </div>
                 {checked && (
                   <span className="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-medium">vinculado</span>
@@ -1039,7 +1039,7 @@ function TabulationConfigEditor({
           {(cfg.channelIds ?? []).length === 0 && (
             <div className="flex items-center gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 mt-1">
               <AlertCircle size={13} className="shrink-0" />
-              Nenhum canal selecionado — esta tabulação será usada como fallback global para canais sem tabulação específica.
+              Nenhum canal selecionado - esta tabulação será usada como fallback global para canais sem tabulação específica.
             </div>
           )}
         </div>

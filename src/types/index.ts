@@ -177,7 +177,7 @@ export interface ApiCallData {
 
 export interface ImageLibraryEntry {
   id: string;       // uuid curto
-  name: string;     // slug único (ex: "catalogo", "promo_maio") — usado no marcador [IMAGEM:nome]
+  name: string;     // slug único (ex: "catalogo", "promo_maio") - usado no marcador [IMAGEM:nome]
   url: string;      // URL pública da imagem
   caption?: string; // legenda opcional enviada junto com a imagem
 }
@@ -217,12 +217,12 @@ export interface FlowNodeData extends Record<string, unknown> {
   listName?: string;
   listSearchValue?: string;
   protocolPrefix?: string;
-  // IA — base de conhecimento e memória
+  // IA - base de conhecimento e memória
   aiKnowledgeBaseIds?: string[];
   aiMemoryTurns?: number;
-  // IA — biblioteca de imagens enviáveis via marcador [IMAGEM:nome]
+  // IA - biblioteca de imagens enviáveis via marcador [IMAGEM:nome]
   imageLibrary?: ImageLibraryEntry[];
-  // IA — legenda usada nas fotos de produto enviadas via [FOTO_PRODUTO:url]
+  // IA - legenda usada nas fotos de produto enviadas via [FOTO_PRODUTO:url]
   fotoProdutoCaption?: string;
   // Delay antes de enviar (send_* nodes)
   delaySeconds?: number;

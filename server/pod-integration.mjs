@@ -44,7 +44,7 @@ async function fireMakeWebhook(sale, tabulation, contactName) {
     if (res.ok) {
       console.log(`[make-webhook] ✅ Webhook disparado com sucesso → ${url.slice(0, 60)}...`);
     } else {
-      console.warn(`[make-webhook] ⚠️  Webhook retornou ${res.status} — verifique a URL no .env`);
+      console.warn(`[make-webhook] ⚠️  Webhook retornou ${res.status} - verifique a URL no .env`);
     }
   } catch (err) {
     console.error(`[make-webhook] ❌ Falha ao disparar webhook: ${err.message}`);
@@ -256,7 +256,7 @@ export async function syncSaleToPod(tabulation, contactName) {
     }
 
     if (saleProducts.length === 0) {
-      console.warn('[pod-integration] Nenhum produto encontrado na tabulação — venda não sincronizada.');
+      console.warn('[pod-integration] Nenhum produto encontrado na tabulação - venda não sincronizada.');
       return null;
     }
 
@@ -343,7 +343,7 @@ export async function syncSaleToPod(tabulation, contactName) {
       console.log(`[pod-integration] ⚠️  Produtos criados sem preço (cadastrar no Pod Sales): ${newProducts.join(', ')}`);
     }
 
-    // Dispara webhook Make/Zapier (não-bloqueante — falha não afeta o fluxo)
+    // Dispara webhook Make/Zapier (não-bloqueante - falha não afeta o fluxo)
     fireMakeWebhook(sale, tabulation, contactName).catch(() => {});
 
     return { ...sale, newProducts }; // newProducts: nomes criados automaticamente (array vazio se nenhum)

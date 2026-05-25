@@ -1,5 +1,5 @@
 /**
- * auth.mjs — Módulo de Autenticação e Segurança do Nex-Chat
+ * auth.mjs - Módulo de Autenticação e Segurança do Nex-Chat
  *
  * Implementa:
  *  - Armazenamento seguro de senhas com bcrypt (custo 12)
@@ -59,7 +59,7 @@ function loadUsers() {
     catch { /* usa padrão */ }
   }
   // Cria usuário admin padrão na primeira execução
-  // Senha padrão: 12345678 — DEVE ser alterada em produção
+  // Senha padrão: 12345678 - DEVE ser alterada em produção
   const defaultHash = bcrypt.hashSync('12345678', BCRYPT_ROUNDS);
   users = {
     'gabriel.nascimento': {
@@ -191,7 +191,7 @@ export function consumeRecoveryToken(token, newPassword) {
   return rec.username;
 }
 
-// ─── 2FA — TOTP (RFC 6238) ───────────────────────────────────────────────────
+// ─── 2FA - TOTP (RFC 6238) ───────────────────────────────────────────────────
 const totp = new TOTP();
 totp.options = { window: 1 }; // tolera ±30s de drift de relógio
 
@@ -266,7 +266,7 @@ export async function login(username, password, totpToken, ip = 'unknown') {
     auditLog('LOGIN_2FA_OK', { username, ip });
   }
 
-  // 5. Sucesso — gera JWT
+  // 5. Sucesso - gera JWT
   clearFailedAttempts(username);
   const jti = crypto.randomUUID();
   const token = jwt.sign(
@@ -375,7 +375,7 @@ export function getLGPDData(username) {
 export function exportLGPDData(username) {
   const base = getLGPDData(username);
   const conversations = Object.values(store.conversations)
-    .filter(() => false) // operadores não têm conversas próprias — phone contacts only
+    .filter(() => false) // operadores não têm conversas próprias - phone contacts only
     .map(c => ({ id: c.id, createdAt: c.createdAt }));
   auditLog('LGPD_DATA_EXPORT', { username });
   return { ...base, conversations };

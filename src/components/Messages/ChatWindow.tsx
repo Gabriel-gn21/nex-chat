@@ -21,7 +21,7 @@ const statusIcon = (s: Message['status']) => {
 // Converte URL de mídia do WhatsApp (que requer auth/CORS) para proxy local
 function mediaProxyUrl(content: string): string {
   if (!content) return content;
-  // Já é base64 data URI — usa direto
+  // Já é base64 data URI - usa direto
   if (content.startsWith('data:')) return content;
   // URL externa → proxia pelo servidor para contornar CORS e auth do CDN
   if (content.startsWith('http')) {
@@ -339,7 +339,7 @@ function TabulationModal({
           <div className="flex items-center justify-between px-4 py-2.5 bg-purple-50 border-b border-purple-100">
             <div className="flex items-center gap-2 text-xs text-purple-700">
               <Sparkles size={13} className="shrink-0" />
-              <span>Campos pré-preenchidos pela IA — revise antes de confirmar</span>
+              <span>Campos pré-preenchidos pela IA - revise antes de confirmar</span>
             </div>
             <button
               onClick={clearAI}
@@ -431,7 +431,7 @@ function TabulationModal({
                     <input
                       type="text" value={values[f.id] ?? ''}
                       onChange={e => setValue(f.id, e.target.value)}
-                      placeholder="Nenhum produto cadastrado — digite manualmente"
+                      placeholder="Nenhum produto cadastrado - digite manualmente"
                       className={clsx('w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 transition', ringClass)}
                     />
                   )
@@ -453,7 +453,7 @@ function TabulationModal({
               className="w-4 h-4 accent-amber-500 cursor-pointer"
             />
             <span className="text-xs text-amber-800 font-medium">
-              🧪 Modo Teste — bot reinicia imediatamente na próxima mensagem
+              🧪 Modo Teste - bot reinicia imediatamente na próxima mensagem
             </span>
           </label>
           {testMode && (
@@ -748,7 +748,7 @@ function RideModal({ conversationId, onClose }: { conversationId: string; onClos
       );
       const j = await r.json();
       if (j[0]) return { lat: j[0].lat, lng: j[0].lon };
-    } catch { /* ignora — usa só formatted_address */ }
+    } catch { /* ignora - usa só formatted_address */ }
     return null;
   };
 
@@ -808,7 +808,7 @@ function RideModal({ conversationId, onClose }: { conversationId: string; onClos
     setOpening('99');
     try {
       // O 99 não possui deep link web com endereços pré-preenchidos.
-      // Abrimos o Google Maps com a rota — no Android ele exibe botão
+      // Abrimos o Google Maps com a rota - no Android ele exibe botão
       // para abrir diretamente no 99 (ou Uber) instalado no celular.
       const params = new URLSearchParams({
         api:         '1',
@@ -905,7 +905,7 @@ function RideModal({ conversationId, onClose }: { conversationId: string; onClos
                 type="text"
                 value={destination}
                 onChange={e => { setDestination(e.target.value); if (aiUsed) setAiUsed(false); }}
-                placeholder="Ex: Rua das Flores, 123 — São Paulo — SP"
+                placeholder="Ex: Rua das Flores, 123 - São Paulo - SP"
                 className={clsx(
                   'flex-1 px-3 py-2 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition',
                   aiUsed ? 'border-purple-300 ring-2 ring-purple-100' : 'border-slate-200'
@@ -927,7 +927,7 @@ function RideModal({ conversationId, onClose }: { conversationId: string; onClos
             </div>
             {aiUsed && (
               <p className="text-[11px] text-purple-600 mt-1 flex items-center gap-1">
-                <Sparkles size={10} /> Preenchido pela IA — revise antes de abrir o app
+                <Sparkles size={10} /> Preenchido pela IA - revise antes de abrir o app
               </p>
             )}
           </div>
@@ -1191,7 +1191,7 @@ export default function ChatWindow({ onBack }: { onBack?: () => void }) {
       {/* ── Header ── */}
       <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100 shadow-sm gap-2 min-w-0 shrink-0">
         <div className="flex items-center gap-2.5 min-w-0 flex-1">
-          {/* Botão voltar — só aparece no mobile */}
+          {/* Botão voltar - só aparece no mobile */}
           {onBack && (
             <button
               onClick={onBack}
@@ -1258,7 +1258,7 @@ export default function ChatWindow({ onBack }: { onBack?: () => void }) {
               {/* Toggle Modo Teste */}
               <button
                 onClick={() => setTestMode(t => !t)}
-                title={testMode ? 'Modo Teste ativo — bot reinicia ao resolver' : 'Ativar Modo Teste'}
+                title={testMode ? 'Modo Teste ativo - bot reinicia ao resolver' : 'Ativar Modo Teste'}
                 className={clsx(
                   'flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-medium transition',
                   testMode
@@ -1342,7 +1342,7 @@ export default function ChatWindow({ onBack }: { onBack?: () => void }) {
                     >
                       <MessageContent msg={msg} isOut={isOut} />
 
-                      {/* Timestamp + status — inline no final do texto */}
+                      {/* Timestamp + status - inline no final do texto */}
                       <div className={clsx(
                         'flex items-center gap-0.5 select-none',
                         isMedia

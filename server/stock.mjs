@@ -1,5 +1,5 @@
 /**
- * stock.mjs — Controle de estoque com SQLite (node:sqlite nativo)
+ * stock.mjs - Controle de estoque com SQLite (node:sqlite nativo)
  */
 import { DatabaseSync } from 'node:sqlite';
 import { Router }       from 'express';
@@ -93,7 +93,7 @@ stockRouter.delete('/products/:id', (req, res) => {
   res.json({ ok: true });
 });
 
-// POST /api/stock/products/:id/adjust — { delta: number, reason: string }
+// POST /api/stock/products/:id/adjust - { delta: number, reason: string }
 stockRouter.post('/products/:id/adjust', (req, res) => {
   const { delta, reason = '' } = req.body;
   if (typeof delta !== 'number' || isNaN(delta)) {
@@ -110,7 +110,7 @@ stockRouter.post('/products/:id/adjust', (req, res) => {
   res.json(db.prepare('SELECT * FROM products WHERE id=?').get(product.id));
 });
 
-// POST /api/stock/sell — { productName: string, quantity: number, reason?: string }
+// POST /api/stock/sell - { productName: string, quantity: number, reason?: string }
 // Endpoint para integração com o chatbot via nó integration_api
 stockRouter.post('/sell', (req, res) => {
   const { productName, quantity = 1, reason = 'Venda via chatbot' } = req.body;
@@ -164,12 +164,12 @@ stockRouter.get('/export', (req, res) => {
     const hr = '─'.repeat(w.reduce((a, b) => a + b + 3, 0));
     const row = (...cols) => cols.map((c, i) => String(c).padEnd(w[i])).join(' │ ');
     const lines = [
-      `ESTOQUE — Exportado em ${dateStr}`,
+      `ESTOQUE - Exportado em ${dateStr}`,
       hr,
       row('Nome', 'Categoria', 'Un.', 'Qtd.', 'Alerta', 'Preço (R$)'),
       hr,
       ...products.map(p =>
-        row(p.name, p.category || '—', p.unit, p.quantity, p.min_alert, p.price.toFixed(2))
+        row(p.name, p.category || ' - ', p.unit, p.quantity, p.min_alert, p.price.toFixed(2))
       ),
       hr,
       `Total de produtos: ${products.length}`,
