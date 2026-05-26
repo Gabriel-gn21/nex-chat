@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node index.mjs",
-    "dev": "node --watch index.mjs"
+    "start": "node --max-http-header-size=32768 index.mjs",
+    "dev": "node --max-http-header-size=32768 --watch index.mjs"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

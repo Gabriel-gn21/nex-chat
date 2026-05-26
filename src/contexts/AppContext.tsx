@@ -144,7 +144,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // ── Carrega conversas do servidor ────────────────────────────────────────
   const loadConversations = useCallback(async () => {
     try {
-      const res  = await apiFetch(`${SERVER_URL}/api/conversations`, { signal: AbortSignal.timeout(4000) });
+      const res  = await apiFetch(`${SERVER_URL}/api/conversations`, { signal: AbortSignal.timeout(8000) });
+      if (!res.ok) {
+        console.warn(`[AppContext] loadConversations falhou: HTTP ${res.status}`);
+        setServerOnline(false);
+        return;
+      }
       const data = await res.json() as Conversation[];
       setConversations(data);
       setServerOnline(true);
@@ -153,7 +158,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         const updated = data.find(c => c.id === activeConvRef.current!.id);
         if (updated) setActiveConversationRaw(updated);
       }
-    } catch {
+    } catch (err) {
+      console.warn('[AppContext] loadConversations erro de rede:', err);
       setServerOnline(false);
     }
   }, []);
@@ -291,6 +297,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     connect();
     return () => { es?.close(); clearTimeout(retryTimer); };
   }, [loadConversations, registerWithServer, playSound]);
+
+  // Fallback: se apos 3s o SSE ainda nao trouxe conversas, tenta carregar direto
+  // Cobre o caso de erro 431 / CORS / timeout no SSE que silencia o loadConversations
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if (conversations.length === 0) {
+        await loadConversations();
+      }
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []); // roda apenas na montagem
 
   // Mantém configRef atualizado para uso no handler SSE (evita closure stale)
   useEffect(() => { configRef.current = { channels, chatbots, groups, knowledgeBases }; }, [channels, chatbots, groups, knowledgeBases]);

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, MessageSquarePlus, UsersRound, History, CheckCheck, SlidersHorizontal, X, Phone, Send, ChevronDown } from 'lucide-react';
+import { Search, MessageSquarePlus, UsersRound, History, CheckCheck, SlidersHorizontal, X, Phone, Send, ChevronDown, WifiOff } from 'lucide-react';
 import { Conversation } from '../../types';
 import { useApp, SERVER_URL, apiFetch } from '../../contexts/AppContext';
 import { useAuth } from '../../contexts/AuthContext';
@@ -32,7 +32,7 @@ const ACTIVE_TABS: { id: ActiveFilter; label: string }[] = [
 ];
 
 export default function ConversationList({ onSelect }: { onSelect?: () => void } = {}) {
-  const { conversations, activeConversation, setActiveConversation, groups, channels } = useApp();
+  const { conversations, activeConversation, setActiveConversation, groups, channels, serverOnline } = useApp();
   const { user } = useAuth();
 
   const [section,        setSection]        = useState<Section>('active');
@@ -222,7 +222,15 @@ export default function ConversationList({ onSelect }: { onSelect?: () => void }
       <div className="flex-1 overflow-y-auto min-h-0">
         {currentList.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-48 text-slate-400 gap-3 px-6 text-center">
-            {section === 'resolved'
+            {!serverOnline && conversations.length === 0 ? (
+              <>
+                <WifiOff size={40} strokeWidth={1} className="text-orange-400" />
+                <div>
+                  <p className="text-sm font-medium text-orange-600">Servidor desconectado</p>
+                  <p className="text-xs text-slate-400 mt-1">Verifique se o servidor esta rodando na porta 3001</p>
+                </div>
+              </>
+            ) : section === 'resolved'
               ? <><History size={40} strokeWidth={1} /><p className="text-sm">Nenhuma conversa resolvida ainda</p></>
               : <><MessageSquarePlus size={40} strokeWidth={1} /><p className="text-sm">Nenhuma conversa ativa no momento</p></>
             }
